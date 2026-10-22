@@ -6,7 +6,7 @@
  */
 
 // Password default admin untuk validasi simpan
-const ADMIN_PASSWORD = "admin123";
+const ADMIN_PASSWORD = "TIGAtama@123";
 
 /**
  * Endpoint GET: Mengambil data Pengaturan, Layanan, Talent, dan Dokumentasi

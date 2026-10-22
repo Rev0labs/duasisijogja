@@ -16,7 +16,7 @@ Website di-hosting gratis di **GitHub Pages** dan terintegrasi dengan **Google S
    - Menampilkan portofolio foto acara nyata.
 4. **Panel Admin / Config Terintegrasi di Halaman Index (`index.html`):**
    - Tombol **Admin Config** tersembunyi di footer halaman.
-   - Diproteksi Password (Default: `admin123`).
+   - Diproteksi Password Admin (`TIGAtama@123`).
    - Bisa ganti: Logo, Nomor WhatsApp (otomatis merubah semua tombol), Akun IG, TikTok, Lokasi, Jam Kerja, Banner Headline, Deskripsi, Visi Misi.
    - Bisa **Tambah, Edit, Nonaktifkan, & Hapus Talent** kapan saja.
    - Bisa **Tambah & Hapus Foto Dokumentasi Kegiatan**.
@@ -28,7 +28,7 @@ Website di-hosting gratis di **GitHub Pages** dan terintegrasi dengan **Google S
 1. Buka website di browser: `https://rev0labs.github.io/duasisijogja/` (atau buka `index.html` lokal).
 2. Scroll ke bagian paling bawah (**Footer**).
 3. Klik tombol **`[🔒 Admin Config]`** di samping kanan teks copyright.
-4. Masukkan password: **`admin123`** lalu klik **Buka Panel Config**.
+4. Masukkan password: **`TIGAtama@123`** lalu klik **Buka Panel Config**.
 5. Silakan ubah data, tambah talent, atau ganti nomor WhatsApp, lalu klik **💾 Simpan Perubahan**.
 
 ---
