@@ -103,54 +103,65 @@
 <body class="bg-brand-darker text-slate-200 font-sans selection:bg-amber-500 selection:text-black">
 
   <!-- TOP ANNOUNCEMENT BAR -->
-  <div class="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-slate-950 text-xs sm:text-sm font-semibold py-2 px-4 text-center">
-    <span id="announcement-text">✨ TIGATAMA - Talent & Event Organizer Terpercaya di Yogyakarta & Jawa Tengah</span>
-    <span class="hidden md:inline mx-2">•</span>
-    <span class="hidden md:inline">Konsultasi Kebutuhan Event Fast Response</span>
+  <div class="bg-brand-darker border-b border-amber-500/20 text-xs py-2 px-4 relative z-40">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-slate-300 text-[11px] sm:text-xs mx-auto sm:mx-0 text-center sm:text-left">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+        <span id="announcement-text">✨ <strong class="text-white">TIGATAMA</strong> — Talent & Event Organizer Terpercaya di Yogyakarta & Jawa Tengah</span>
+        <span class="hidden md:inline text-slate-600">•</span>
+        <span class="hidden md:inline text-amber-400 font-medium">Konsultasi Kebutuhan Event Fast Response</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-3 shrink-0">
+        <button id="open-admin-btn-topbar" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] text-slate-400 hover:text-amber-400 hover:bg-slate-800/80 transition-colors" title="Akses Admin" aria-label="Akses Admin">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <span class="font-medium">Admin</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- NAVBAR -->
-  <header class="sticky top-0 z-40 bg-brand-dark/90 backdrop-blur-md border-b border-slate-800">
+  <header class="sticky top-0 z-40 bg-brand-dark/95 backdrop-blur-md border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
+      <div class="flex items-center justify-between h-20 gap-2 sm:gap-4">
         <!-- Logo -->
-        <a href="#beranda" class="flex items-center gap-3.5 group">
-          <div id="nav-logo-container" class="w-12 h-12 rounded-xl bg-black border border-amber-500/40 flex items-center justify-center shadow-lg shadow-amber-500/15 group-hover:border-amber-400 group-hover:scale-105 transition-all overflow-hidden p-0.5">
+        <a href="#beranda" class="flex items-center gap-3 shrink-0 group">
+          <div id="nav-logo-container" class="w-11 h-11 rounded-xl bg-black border border-amber-500/40 flex items-center justify-center shadow-lg shadow-amber-500/15 group-hover:border-amber-400 group-hover:scale-105 transition-all overflow-hidden shrink-0 p-0.5">
             <img src="assets/logo.jpg" alt="TIGATAMA Logo" class="w-full h-full object-cover rounded-lg">
           </div>
-          <div class="flex flex-col">
-            <span id="nav-brand-name" class="text-xl font-black tracking-wider text-white group-hover:text-amber-400 transition-colors">
+          <div class="flex flex-col shrink-0">
+            <span id="nav-brand-name" class="text-lg sm:text-xl font-black tracking-tight text-white group-hover:text-amber-400 transition-colors whitespace-nowrap">
               TIGA<span class="text-gradient-gold font-extrabold">TAMA</span>
             </span>
-            <span id="nav-tagline" class="text-[9.5px] uppercase tracking-[0.22em] text-amber-200/70 font-semibold -mt-1">Talent & Event Organizer</span>
+            <span id="nav-tagline" class="text-[9px] uppercase tracking-[0.18em] text-amber-200/70 font-semibold whitespace-nowrap -mt-0.5">Talent & Event Organizer</span>
           </div>
         </a>
 
         <!-- Desktop Navigation Links -->
-        <nav class="hidden lg:flex items-center gap-7 text-sm font-medium">
-          <a href="#beranda" class="text-slate-300 hover:text-amber-400 transition-colors">Beranda</a>
-          <a href="#profil" class="text-slate-300 hover:text-amber-400 transition-colors">Profil Agensi</a>
-          <a href="#visi-misi" class="text-slate-300 hover:text-amber-400 transition-colors">Visi & Misi</a>
-          <a href="#layanan" class="text-slate-300 hover:text-amber-400 transition-colors">Layanan</a>
-          <a href="#galeri" class="text-slate-300 hover:text-amber-400 transition-colors">Katalog Talent</a>
-          <a href="#dokumentasi" class="text-slate-300 hover:text-amber-400 transition-colors">Dokumentasi</a>
-          <a href="#cara-pesan" class="text-slate-300 hover:text-amber-400 transition-colors">Alur Booking</a>
-          <a href="#kontak" class="text-slate-300 hover:text-amber-400 transition-colors">Kontak</a>
+        <nav class="hidden lg:flex items-center gap-2 xl:gap-5 2xl:gap-6 text-xs xl:text-sm font-medium">
+          <a href="#beranda" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Beranda</a>
+          <a href="#profil" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Profil</a>
+          <a href="#visi-misi" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Visi & Misi</a>
+          <a href="#layanan" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Layanan</a>
+          <a href="#galeri" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Katalog Talent</a>
+          <a href="#dokumentasi" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Dokumentasi</a>
+          <a href="#cara-pesan" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Alur Booking</a>
+          <a href="#kontak" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Kontak</a>
         </nav>
 
         <!-- Right Side: CTA Button + Discrete Top Bar Admin Icon -->
-        <div class="hidden lg:flex items-center gap-3">
+        <div class="hidden lg:flex items-center gap-2.5 shrink-0">
           <a id="nav-cta-wa" href="https://wa.me/6281234567890?text=Halo%20Admin%20TIGATAMA,%20saya%20ingin%20konsultasi%20kebutuhan%20talent%20event" 
              target="_blank" rel="noopener noreferrer"
-             class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full gradient-gold text-slate-950 font-bold text-sm shadow-md shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-105 transition-all">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+             class="inline-flex items-center gap-2 px-4 xl:px-5 py-2.5 rounded-full gradient-gold text-slate-950 font-bold text-xs xl:text-sm shadow-md shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-105 transition-all shrink-0 whitespace-nowrap">
+            <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
               <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
             </svg>
             <span>Hubungi Kami</span>
           </a>
 
           <!-- Discrete Small Lock Icon di Top Bar -->
-          <button id="open-admin-btn" class="p-2.5 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-amber-400 border border-slate-700/60 transition-colors" title="Admin Login" aria-label="Admin Login">
+          <button id="open-admin-btn" class="p-2.5 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-amber-400 border border-slate-700/60 transition-colors shrink-0" title="Akses Admin Config" aria-label="Akses Admin Config">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
           </button>
         </div>
@@ -1443,8 +1454,12 @@
     function renderApp() {
       // 1. Branding
       const brandName = appConfig.nama_agensi || "TIGATAMA";
-      document.getElementById('nav-brand-name').innerHTML = `${escapeHtml(brandName)}`;
-      document.getElementById('nav-tagline').textContent = appConfig.tagline;
+      if (brandName.toUpperCase() === "TIGATAMA") {
+        document.getElementById('nav-brand-name').innerHTML = `TIGA<span class="text-gradient-gold font-extrabold">TAMA</span>`;
+      } else {
+        document.getElementById('nav-brand-name').textContent = brandName;
+      }
+      document.getElementById('nav-tagline').textContent = appConfig.tagline || "Talent & Event Organizer";
       document.getElementById('footer-brand').textContent = brandName;
       document.getElementById('cta-brand-name').textContent = brandName;
       document.getElementById('about-brand-name').textContent = brandName;
@@ -1722,6 +1737,7 @@
 
     // --- 8. ADMIN LOGIN & TOP BAR ICONS ---
     const openAdminBtn = document.getElementById('open-admin-btn');
+    const openAdminBtnTopbar = document.getElementById('open-admin-btn-topbar');
     const openAdminBtnMobile = document.getElementById('open-admin-btn-mobile');
     const loginModal = document.getElementById('login-modal');
     const closeLoginBtn = document.getElementById('close-login-btn');
@@ -1755,6 +1771,7 @@
     }
 
     openAdminBtn.addEventListener('click', triggerAdminLogin);
+    if (openAdminBtnTopbar) openAdminBtnTopbar.addEventListener('click', triggerAdminLogin);
     if (openAdminBtnMobile) openAdminBtnMobile.addEventListener('click', triggerAdminLogin);
 
     closeLoginBtn.addEventListener('click', () => loginModal.classList.add('hidden'));
