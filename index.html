@@ -613,7 +613,7 @@
               Siap Bermitra?
             </span>
             <h2 class="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
-              Jadikan Event Anda Lebih Berkesan Bersama <span id="cta-brand-name">TIGATAMA</span>
+              Jadikan Event Anda Lebih Berkesan Bersama <span class="text-gradient-gold" id="cta-brand-name">TIGATAMA</span>
             </h2>
             <p class="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
               Diskusikan kebutuhan talent, estimasi biaya, atau jadwal acara Anda dengan tim representatif kami sekarang. Kami siap membantu mewujudkan acara terbaik Anda di Yogyakarta dan sekitarnya.
@@ -1461,9 +1461,10 @@
       }
       document.getElementById('nav-tagline').textContent = appConfig.tagline || "Talent & Event Organizer";
       document.getElementById('footer-brand').textContent = brandName;
-      document.getElementById('cta-brand-name').textContent = brandName;
-      document.getElementById('about-brand-name').textContent = brandName;
-      document.getElementById('hero-brand-highlight').textContent = brandName;
+      const ctaBrandEl = document.getElementById('cta-brand-name');
+      if (ctaBrandEl) ctaBrandEl.textContent = brandName;
+      const aboutBrandEl = document.getElementById('about-brand-name');
+      if (aboutBrandEl) aboutBrandEl.textContent = brandName;
 
       // Logo
       const logoBox = document.getElementById('nav-logo-container');
@@ -1487,9 +1488,22 @@
       document.getElementById('floating-wa-btn').href = generalWaUrl;
       document.getElementById('catalog-wa-link').href = `https://wa.me/${cleanWa}?text=Halo%20Admin%20${encodeURIComponent(brandName)},%20boleh%20minta%20katalog%20dan%20compcard%20talent%20lengkapnya?`;
 
-      // 3. Hero Texts
+      // 3. Hero Texts & Golden Highlight on Headline
       document.getElementById('hero-badge-text').textContent = appConfig.hero_badge;
-      document.getElementById('hero-headline-text').textContent = appConfig.hero_headline;
+      
+      const headline = appConfig.hero_headline || "Tingkatkan Citra Brand Anda Bersama TIGATAMA";
+      const headlineEl = document.getElementById('hero-headline-text');
+      if (headlineEl) {
+        // Highlight brandName or TIGATAMA with text-gradient-gold
+        const targetWord = (headline.toLowerCase().includes(brandName.toLowerCase())) ? brandName : "TIGATAMA";
+        if (headline.toLowerCase().includes(targetWord.toLowerCase())) {
+          const regex = new RegExp(`(${targetWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+          headlineEl.innerHTML = escapeHtml(headline).replace(regex, `<span class="text-gradient-gold" id="hero-brand-highlight">$1</span>`);
+        } else {
+          headlineEl.textContent = headline;
+        }
+      }
+      
       document.getElementById('hero-desc-text').textContent = appConfig.hero_deskripsi;
       if (appConfig.hero_image) {
         document.getElementById('hero-image-display').src = appConfig.hero_image;
