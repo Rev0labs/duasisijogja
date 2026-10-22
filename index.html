@@ -64,7 +64,7 @@
       background: linear-gradient(135deg, #F3D276 0%, #D8B14E 50%, #B88E28 100%);
     }
     .text-gradient-gold {
-      background: linear-gradient(135deg, #FFF0B8 0%, #ECC562 45%, #C29930 100%);
+      background: linear-gradient(135deg, #FDE68A 0%, #DFBA55 40%, #B88E28 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -130,10 +130,10 @@
             <img src="assets/logo.jpg" alt="TIGATAMA Logo" class="w-full h-full object-cover rounded-lg">
           </div>
           <div class="flex flex-col shrink-0">
-            <span id="nav-brand-name" class="text-lg sm:text-xl font-black tracking-tight text-white group-hover:text-amber-400 transition-colors whitespace-nowrap">
-              TIGA<span class="text-gradient-gold font-extrabold">TAMA</span>
+            <span id="nav-brand-name" class="text-lg sm:text-xl font-black tracking-wider text-gradient-gold whitespace-nowrap">
+              TIGATAMA
             </span>
-            <span id="nav-tagline" class="text-[9px] uppercase tracking-[0.18em] text-amber-200/70 font-semibold whitespace-nowrap -mt-0.5">Talent & Event Organizer</span>
+            <span id="nav-tagline" class="text-[9px] uppercase tracking-[0.2em] text-amber-300/80 font-semibold whitespace-nowrap -mt-0.5">Talent & Event Organizer</span>
           </div>
         </a>
 
@@ -302,15 +302,15 @@
         <div class="lg:col-span-5 order-2 lg:order-1">
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-4">
-              <img class="rounded-2xl shadow-lg object-cover h-48 w-full border border-slate-700/60" 
+              <img id="profil-img-1" class="rounded-2xl shadow-lg object-cover h-48 w-full border border-slate-700/60" 
                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop" 
                    alt="Talent Usher Jogja">
-              <img class="rounded-2xl shadow-lg object-cover h-64 w-full border border-slate-700/60" 
+              <img id="profil-img-2" class="rounded-2xl shadow-lg object-cover h-64 w-full border border-slate-700/60" 
                    src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600&auto=format&fit=crop" 
                    alt="Model Event Jogja">
             </div>
             <div class="space-y-4 pt-8">
-              <img class="rounded-2xl shadow-lg object-cover h-64 w-full border border-slate-700/60" 
+              <img id="profil-img-3" class="rounded-2xl shadow-lg object-cover h-64 w-full border border-slate-700/60" 
                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop" 
                    alt="SPG Pameran Jogja">
               <div class="p-6 rounded-2xl glass-card flex flex-col justify-center items-center text-center">
@@ -905,6 +905,43 @@
                 <label class="block text-xs font-semibold text-slate-300 mb-1">Profil Tentang Kami (Paragraf 2)</label>
                 <textarea id="cfg-profil-p2" rows="3" class="w-full px-3.5 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs sm:text-sm focus:border-amber-400 focus:outline-none"></textarea>
               </div>
+
+              <!-- Upload Profil Grid Photos (3 Foto) -->
+              <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700/80 space-y-3">
+                <div>
+                  <label class="block text-xs font-bold text-amber-400">Foto Galeri Profil Agensi (3 Foto Grid)</label>
+                  <p class="text-[11px] text-slate-400">Ganti dan upload 3 foto model di samping teks profil agensi</p>
+                </div>
+                <div class="grid sm:grid-cols-3 gap-3">
+                  <!-- Foto Profil 1 -->
+                  <div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 space-y-2">
+                    <span class="text-[11px] font-semibold text-slate-300 block">Foto 1 (Kiri Atas)</span>
+                    <div class="w-full h-24 rounded-lg bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
+                      <img id="cfg-profil-img-1-preview" src="" alt="Foto 1" class="w-full h-full object-cover">
+                    </div>
+                    <input type="file" id="cfg-profil-img-1-file" accept="image/*" class="block w-full text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <input type="text" id="cfg-profil-img-1" placeholder="Atau paste URL Foto 1..." class="w-full px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-[11px] text-white focus:outline-none focus:border-amber-400">
+                  </div>
+                  <!-- Foto Profil 2 -->
+                  <div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 space-y-2">
+                    <span class="text-[11px] font-semibold text-slate-300 block">Foto 2 (Kiri Bawah)</span>
+                    <div class="w-full h-24 rounded-lg bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
+                      <img id="cfg-profil-img-2-preview" src="" alt="Foto 2" class="w-full h-full object-cover">
+                    </div>
+                    <input type="file" id="cfg-profil-img-2-file" accept="image/*" class="block w-full text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <input type="text" id="cfg-profil-img-2" placeholder="Atau paste URL Foto 2..." class="w-full px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-[11px] text-white focus:outline-none focus:border-amber-400">
+                  </div>
+                  <!-- Foto Profil 3 -->
+                  <div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 space-y-2">
+                    <span class="text-[11px] font-semibold text-slate-300 block">Foto 3 (Kanan)</span>
+                    <div class="w-full h-24 rounded-lg bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
+                      <img id="cfg-profil-img-3-preview" src="" alt="Foto 3" class="w-full h-full object-cover">
+                    </div>
+                    <input type="file" id="cfg-profil-img-3-file" accept="image/*" class="block w-full text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <input type="text" id="cfg-profil-img-3" placeholder="Atau paste URL Foto 3..." class="w-full px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-[11px] text-white focus:outline-none focus:border-amber-400">
+                  </div>
+                </div>
+              </div>
               <div>
                 <label class="block text-xs font-semibold text-slate-300 mb-1">Visi Agensi</label>
                 <textarea id="cfg-visi" rows="2" class="w-full px-3.5 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs sm:text-sm focus:border-amber-400 focus:outline-none"></textarea>
@@ -1250,6 +1287,9 @@
       hero_image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop",
       profil_deskripsi_1: "TIGATAMA hadir dengan komitmen tinggi menghadirkan standar mutu baru dalam industri talent dan manajemen acara (Talent & Event Organizer) di Yogyakarta. Filosofi \"TIGATAMA\" melambangkan tiga pilar utama kami: Kualitas Terkurasi (Quality), Ketepatan Waktu (Discipline), dan Integritas Kerja (Integrity).",
       profil_deskripsi_2: "Kami memahami bahwa talent yang Anda pilih di garda depan adalah cerminan dari reputasi dan nilai brand Anda. Oleh karena itu, setiap talent yang tergabung di TIGATAMA telah melalui tahap kurasi ketat: memiliki kemampuan komunikasi aktif, pemahaman etika protokoler, serta kesiapan mental untuk menghadapi dinamika berbagai skala event.",
+      profil_img_1: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop",
+      profil_img_2: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600&auto=format&fit=crop",
+      profil_img_3: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop",
       visi: "Menjadi mitra agensi talent dan event organizer yang paling terpercaya, profesional, dan berdaya saing tinggi di Yogyakarta serta Jawa Tengah, dengan selalu mengedepankan integritas, profesionalitas, dan kepuasan klien.",
       misi_1: "Menyediakan talent yang tidak hanya menarik secara penampilan fisik, tetapi juga komunikatif, ramah, dan adaptif.",
       misi_2: "Memberikan pelayanan prima dan respon cepat bagi setiap calon mitra/klien yang membutuhkan talent.",
@@ -1400,6 +1440,9 @@
         if (!appConfig.logo_url || appConfig.logo_url.trim() === "") {
           appConfig.logo_url = "assets/logo.jpg";
         }
+        if (!appConfig.profil_img_1) appConfig.profil_img_1 = DEFAULT_CONFIG.profil_img_1;
+        if (!appConfig.profil_img_2) appConfig.profil_img_2 = DEFAULT_CONFIG.profil_img_2;
+        if (!appConfig.profil_img_3) appConfig.profil_img_3 = DEFAULT_CONFIG.profil_img_3;
       }
       const savedServices = localStorage.getItem(STORAGE_KEY_SERVICES) || localStorage.getItem("tigatama_services_v3");
       if (savedServices) appServices = JSON.parse(savedServices);
@@ -1455,7 +1498,7 @@
       // 1. Branding
       const brandName = appConfig.nama_agensi || "TIGATAMA";
       if (brandName.toUpperCase() === "TIGATAMA") {
-        document.getElementById('nav-brand-name').innerHTML = `TIGA<span class="text-gradient-gold font-extrabold">TAMA</span>`;
+        document.getElementById('nav-brand-name').innerHTML = `<span class="text-gradient-gold font-black">TIGATAMA</span>`;
       } else {
         document.getElementById('nav-brand-name').textContent = brandName;
       }
@@ -1512,6 +1555,9 @@
       // 4. Profil & Visi Misi
       document.getElementById('about-p1').textContent = appConfig.profil_deskripsi_1;
       document.getElementById('about-p2').textContent = appConfig.profil_deskripsi_2;
+      if (appConfig.profil_img_1) document.getElementById('profil-img-1').src = appConfig.profil_img_1;
+      if (appConfig.profil_img_2) document.getElementById('profil-img-2').src = appConfig.profil_img_2;
+      if (appConfig.profil_img_3) document.getElementById('profil-img-3').src = appConfig.profil_img_3;
       document.getElementById('visi-text').textContent = `"${appConfig.visi}"`;
       document.getElementById('misi-1-text').textContent = appConfig.misi_1;
       document.getElementById('misi-2-text').textContent = appConfig.misi_2;
@@ -1832,6 +1878,12 @@
 
       document.getElementById('cfg-profil-p1').value = appConfig.profil_deskripsi_1 || "";
       document.getElementById('cfg-profil-p2').value = appConfig.profil_deskripsi_2 || "";
+      document.getElementById('cfg-profil-img-1').value = appConfig.profil_img_1 || "";
+      document.getElementById('cfg-profil-img-1-preview').src = appConfig.profil_img_1 || "";
+      document.getElementById('cfg-profil-img-2').value = appConfig.profil_img_2 || "";
+      document.getElementById('cfg-profil-img-2-preview').src = appConfig.profil_img_2 || "";
+      document.getElementById('cfg-profil-img-3').value = appConfig.profil_img_3 || "";
+      document.getElementById('cfg-profil-img-3-preview').src = appConfig.profil_img_3 || "";
       document.getElementById('cfg-visi').value = appConfig.visi || "";
       document.getElementById('cfg-misi-1').value = appConfig.misi_1 || "";
       document.getElementById('cfg-misi-2').value = appConfig.misi_2 || "";
@@ -1880,6 +1932,31 @@
         document.getElementById('cfg-hero-image').value = base64;
         document.getElementById('cfg-hero-image-preview').src = base64;
         showToast("Foto banner berhasil dimuat!");
+      }
+    });
+
+    // Upload Profil Grid Images Handlers
+    [1, 2, 3].forEach(num => {
+      const fileInput = document.getElementById(`cfg-profil-img-${num}-file`);
+      const textInput = document.getElementById(`cfg-profil-img-${num}`);
+      const previewImg = document.getElementById(`cfg-profil-img-${num}-preview`);
+      
+      if (fileInput) {
+        fileInput.addEventListener('change', async (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const base64 = await compressImageFile(file, 800, 0.85);
+            if (textInput) textInput.value = base64;
+            if (previewImg) previewImg.src = base64;
+            showToast(`Foto profil ${num} berhasil dimuat!`);
+          }
+        });
+      }
+
+      if (textInput && previewImg) {
+        textInput.addEventListener('input', (e) => {
+          previewImg.src = e.target.value.trim();
+        });
       }
     });
 
@@ -2251,6 +2328,9 @@
 
       appConfig.profil_deskripsi_1 = document.getElementById('cfg-profil-p1').value.trim() || appConfig.profil_deskripsi_1;
       appConfig.profil_deskripsi_2 = document.getElementById('cfg-profil-p2').value.trim() || appConfig.profil_deskripsi_2;
+      appConfig.profil_img_1 = document.getElementById('cfg-profil-img-1').value.trim() || appConfig.profil_img_1;
+      appConfig.profil_img_2 = document.getElementById('cfg-profil-img-2').value.trim() || appConfig.profil_img_2;
+      appConfig.profil_img_3 = document.getElementById('cfg-profil-img-3').value.trim() || appConfig.profil_img_3;
       appConfig.visi = document.getElementById('cfg-visi').value.trim() || appConfig.visi;
       appConfig.misi_1 = document.getElementById('cfg-misi-1').value.trim() || appConfig.misi_1;
       appConfig.misi_2 = document.getElementById('cfg-misi-2').value.trim() || appConfig.misi_2;
