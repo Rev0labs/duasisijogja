@@ -26,10 +26,10 @@ Website di-hosting gratis di **GitHub Pages** dan terintegrasi dengan **Google S
 ---
 
 ## 🔑 Akses Panel Admin di Website
-1. Buka website di browser: `https://rev0labs.github.io/duasisijogja/` (atau buka `index.html` lokal).
-2. Klik ikon **Gembok (🔒)** kecil di pojok kanan atas navbar.
+1. Buka website di browser: `https://rev0labs.github.io/tigatama/` (atau buka `index.html` lokal).
+2. Klik ikon **Gembok (🔒)** kecil di pojok kanan atas navbar (atau tombol Admin di top announcement bar).
 3. Masukkan password: **`TIGAtama@123`** lalu klik **Buka Panel Config**.
-4. Silakan ubah data, upload foto talent/logo/hero, atau kelola layanan, lalu klik **💾 Simpan Semua Perubahan**.
+4. Silakan ubah data, upload foto talent/logo/hero/profil, atau kelola layanan, lalu klik **💾 Simpan Semua Perubahan**.
 
 ---
 
@@ -60,8 +60,6 @@ Jika ingin menghubungkan ke Google Sheets agar data bisa tersimpan secara perman
 Buka PowerShell di komputer Anda:
 ```powershell
 cd "C:\Users\junre\.gemini\antigravity\scratch\dua-sisi-jogja"
-git add .
-git commit -m "Integrate official TIGATAMA logo and luxury gold branding"
 git push origin main
 ```
-Tunggu 1 menit, dan website di `https://rev0labs.github.io/duasisijogja/` akan otomatis ter-update!
+Tunggu 1 menit, dan website di `https://rev0labs.github.io/tigatama/` akan otomatis aktif/ter-update!
