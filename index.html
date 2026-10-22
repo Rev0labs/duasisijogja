@@ -1066,18 +1066,34 @@
       </div>
 
       <!-- Footer Admin Panel -->
-      <div class="px-6 py-4 bg-slate-950 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
-        <div id="save-status-msg" class="text-xs text-slate-400">
-          Semua data tersimpan otomatis di cache browser & Google Sheets saat Anda klik Simpan.
+      <div class="px-6 py-4 bg-slate-950 border-t border-slate-800 flex flex-col gap-3 shrink-0">
+        <!-- Progress Bar Container (Muncul saat proses simpan & upload foto) -->
+        <div id="save-progress-container" class="hidden w-full bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span id="save-progress-step" class="text-amber-400 font-medium flex items-center gap-2">
+              <span class="w-3.5 h-3.5 border-2 border-amber-400 border-t-transparent rounded-full animate-spin"></span>
+              <span>Menyiapkan upload...</span>
+            </span>
+            <span id="save-progress-percent" class="font-mono font-bold text-amber-300">0%</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+            <div id="save-progress-bar" class="gradient-gold h-full rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+          </div>
         </div>
-        <div class="flex items-center gap-3 w-full sm:w-auto">
-          <button id="cancel-admin-btn" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors">
-            Tutup
-          </button>
-          <button id="save-all-btn" class="w-full sm:w-auto px-7 py-2.5 rounded-xl gradient-gold text-slate-950 text-xs font-extrabold shadow-lg hover:scale-105 transition-all flex items-center justify-center gap-2">
-            <span id="save-btn-spinner" class="hidden w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></span>
-            <span id="save-btn-text">💾 Simpan Semua Perubahan</span>
-          </button>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div id="save-status-msg" class="text-xs text-slate-400">
+            Semua data tersimpan langsung ke Google Sheets & Google Drive saat Anda klik Simpan.
+          </div>
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <button id="cancel-admin-btn" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors">
+              Tutup
+            </button>
+            <button id="save-all-btn" class="w-full sm:w-auto px-7 py-2.5 rounded-xl gradient-gold text-slate-950 text-xs font-extrabold shadow-lg hover:scale-105 transition-all flex items-center justify-center gap-2">
+              <span id="save-btn-spinner" class="hidden w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></span>
+              <span id="save-btn-text">💾 Simpan Semua Perubahan</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -2217,10 +2233,11 @@
     formTalentFile.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (file) {
+        showToast("⏳ Memproses & mengompresi foto talent...");
         const base64 = await compressImageFile(file, 600, 0.75);
         formTalentUrl.value = base64;
         formTalentPreview.src = base64;
-        showToast("Foto talent siap! Klik 'Simpan Perubahan'.");
+        showToast("✅ Foto talent siap (100%)! Klik 'Simpan Perubahan'.");
       }
     });
 
@@ -2341,10 +2358,11 @@
     formDocFile.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (file) {
+        showToast("⏳ Memproses & mengompresi foto event...");
         const base64 = await compressImageFile(file, 800, 0.85);
         formDocUrl.value = base64;
         formDocPreview.src = base64;
-        showToast("Foto event siap!");
+        showToast("✅ Foto event siap (100%)! Klik 'Simpan Dokumentasi'.");
       }
     });
 
@@ -2393,7 +2411,35 @@
       }
     };
 
-    // --- 13. SAVE ALL (LOCAL + GOOGLE APPS SCRIPT) ---
+    // --- PROGRESS BAR HELPER ---
+    function updateSaveProgress(percent, stepText) {
+      const container = document.getElementById('save-progress-container');
+      const bar = document.getElementById('save-progress-bar');
+      const percentEl = document.getElementById('save-progress-percent');
+      const stepEl = document.getElementById('save-progress-step');
+      if (!container || !bar) return;
+
+      container.classList.remove('hidden');
+      const clamped = Math.min(100, Math.max(0, percent));
+      bar.style.width = `${clamped}%`;
+      if (percentEl) percentEl.textContent = `${Math.round(clamped)}%`;
+      if (stepEl && stepText) {
+        if (clamped >= 100) {
+          stepEl.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1.5"><span>✅</span> <span>${stepText}</span></span>`;
+          bar.className = "bg-emerald-500 h-full rounded-full transition-all duration-300 ease-out";
+        } else {
+          stepEl.innerHTML = `<span class="text-amber-400 font-medium flex items-center gap-2"><span class="w-3.5 h-3.5 border-2 border-amber-400 border-t-transparent rounded-full animate-spin"></span><span>${stepText}</span></span>`;
+          bar.className = "gradient-gold h-full rounded-full transition-all duration-300 ease-out";
+        }
+      }
+    }
+
+    function hideSaveProgress() {
+      const container = document.getElementById('save-progress-container');
+      if (container) container.classList.add('hidden');
+    }
+
+    // --- 13. SAVE ALL (LOCAL + GOOGLE APPS SCRIPT DENGAN PROGRESS INDIKATOR) ---
     const saveAllBtn = document.getElementById('save-all-btn');
     const saveSpinner = document.getElementById('save-btn-spinner');
     const saveText = document.getElementById('save-btn-text');
@@ -2430,8 +2476,19 @@
       const activeApi = apiUrl || DEFAULT_API_URL || "";
       if (activeApi && activeApi.trim() !== '') {
         saveSpinner.classList.remove('hidden');
-        saveText.textContent = "Mengunggah foto ke Google Drive & menyimpan ke Spreadsheet...";
+        saveText.textContent = "Menyimpan...";
         saveAllBtn.disabled = true;
+
+        let currentProgress = 10;
+        updateSaveProgress(currentProgress, "Menyiapkan data & kompresi foto...");
+
+        // Smooth ticker animasi saat data diunggah ke Google Apps Script & Drive
+        let progressInterval = setInterval(() => {
+          if (currentProgress < 68) {
+            currentProgress += Math.floor(Math.random() * 5) + 3;
+            updateSaveProgress(currentProgress, "Mengunggah data & foto ke Google Drive...");
+          }
+        }, 280);
 
         try {
           const payload = {
@@ -2445,6 +2502,8 @@
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 40000);
 
+          updateSaveProgress(25, "Mengunggah data & foto ke Google Drive...");
+
           await fetch(activeApi, {
             method: 'POST',
             mode: 'no-cors',
@@ -2455,23 +2514,32 @@
             signal: controller.signal
           });
           clearTimeout(timeoutId);
+          clearInterval(progressInterval);
 
-          saveText.textContent = "Menyinkronkan data langsung dari Google Sheets...";
-          await new Promise(r => setTimeout(r, 2000));
+          updateSaveProgress(78, "Menyimpan ke Google Sheets & generate CDN Drive...");
+          await new Promise(r => setTimeout(r, 1200));
           
-          // Tarik data MURNI yang sudah ter-update di Google Sheets & Drive
+          updateSaveProgress(90, "Menyinkronkan data langsung dari Google Sheets...");
           const synced = await syncFromGoogleSheets();
+
+          updateSaveProgress(100, "Selesai 100%! Data & foto berhasil diperbarui.");
+          await new Promise(r => setTimeout(r, 600));
+
           if (synced) {
             showToast("✅ Berhasil disimpan ke Google Drive (Folder: TIGATAMA) & Sheets!");
           } else {
             showToast("Data tersimpan di Google Sheets!");
           }
+          adminPanelModal.classList.add('hidden');
         } catch (err) {
+          clearInterval(progressInterval);
           console.error("Gagal simpan ke Google Sheets:", err);
+          updateSaveProgress(0, "Gagal menyimpan!");
           showToast("❌ Gagal menyimpan ke Google Sheets! Perubahan tidak disimpan.");
-          // Kembalikan ke data spreadsheet asli agar tidak tertinggal di sesi lokal
           await syncFromGoogleSheets();
         } finally {
+          clearInterval(progressInterval);
+          setTimeout(() => hideSaveProgress(), 1200);
           saveSpinner.classList.add('hidden');
           saveText.textContent = "💾 Simpan Semua Perubahan";
           saveAllBtn.disabled = false;
@@ -2479,8 +2547,6 @@
       } else {
         showToast("⚠️ URL Google Apps Script belum terkonfigurasi!");
       }
-
-      adminPanelModal.classList.add('hidden');
     });
 
     // Test API Button Handler
