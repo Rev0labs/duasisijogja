@@ -130,6 +130,9 @@ function doPost(e) {
       saveDokumentasiData(ss, payload.dokumentasi);
     }
     
+    // Pastikan seluruh data langsung ter-flush ke sel Google Sheets
+    SpreadsheetApp.flush();
+    
     return ContentService.createTextOutput(JSON.stringify({
       status: "success",
       message: "Data dan foto berhasil disimpan ke Google Drive (Folder: TIGATAMA) dan Google Sheets!",

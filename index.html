@@ -1762,7 +1762,18 @@
         const json = await res.json();
         if (json.status === 'success' && json.data) {
           if (json.data.config) {
-            appConfig = Object.assign(appConfig, json.data.config);
+            // Merge config dengan aman: jangan timpa foto upload lokal dengan foto default jika remote belum ter-update
+            Object.keys(json.data.config).forEach(k => {
+              const remoteVal = json.data.config[k];
+              const localVal = appConfig[k];
+              if (localVal && typeof localVal === 'string' && localVal.startsWith('data:image/')) {
+                if (remoteVal && (remoteVal.includes('googleusercontent.com') || remoteVal.includes('drive.google.com'))) {
+                  appConfig[k] = remoteVal;
+                }
+              } else if (remoteVal !== undefined && remoteVal !== '') {
+                appConfig[k] = remoteVal;
+              }
+            });
             localStorage.setItem(STORAGE_KEY_CONFIG, JSON.stringify(appConfig));
           }
           if (json.data.layanan && json.data.layanan.length > 0) {
@@ -1904,6 +1915,14 @@
       adminPanelModal.classList.remove('hidden');
     }
 
+    function highlightSaveButton() {
+      const btn = document.getElementById('save-all-btn');
+      if (btn) {
+        btn.classList.add('animate-pulse');
+        setTimeout(() => btn.classList.remove('animate-pulse'), 3000);
+      }
+    }
+
     // Upload Logo Handler
     document.getElementById('cfg-logo-file').addEventListener('change', async (e) => {
       const file = e.target.files[0];
@@ -1911,7 +1930,8 @@
         const base64 = await compressImageFile(file, 400, 0.9);
         document.getElementById('cfg-logo-url').value = base64;
         updateLogoPreviewBox(base64);
-        showToast("Logo berhasil dimuat!");
+        highlightSaveButton();
+        showToast("Logo berhasil dimuat! Klik 'Simpan Semua Perubahan' untuk menerapkan.");
       }
     });
 
@@ -1935,7 +1955,8 @@
         const base64 = await compressImageFile(file, 900, 0.85);
         document.getElementById('cfg-hero-image').value = base64;
         document.getElementById('cfg-hero-image-preview').src = base64;
-        showToast("Foto banner berhasil dimuat!");
+        highlightSaveButton();
+        showToast("Foto banner berhasil dimuat! Klik 'Simpan Semua Perubahan' untuk menerapkan.");
       }
     });
 
@@ -1952,7 +1973,8 @@
             const base64 = await compressImageFile(file, 800, 0.85);
             if (textInput) textInput.value = base64;
             if (previewImg) previewImg.src = base64;
-            showToast(`Foto profil ${num} berhasil dimuat!`);
+            highlightSaveButton();
+            showToast(`Foto profil ${num} dimuat! Klik 'Simpan Semua Perubahan' untuk menerapkan.`);
           }
         });
       }
@@ -2383,7 +2405,17 @@
             const json = await resp.json();
             if (json && json.status === "success" && json.data) {
               if (json.data.config) {
-                appConfig = Object.assign(appConfig, json.data.config);
+                Object.keys(json.data.config).forEach(k => {
+                  const remoteVal = json.data.config[k];
+                  const localVal = appConfig[k];
+                  if (localVal && typeof localVal === 'string' && localVal.startsWith('data:image/')) {
+                    if (remoteVal && (remoteVal.includes('googleusercontent.com') || remoteVal.includes('drive.google.com'))) {
+                      appConfig[k] = remoteVal;
+                    }
+                  } else if (remoteVal !== undefined && remoteVal !== '') {
+                    appConfig[k] = remoteVal;
+                  }
+                });
                 localStorage.setItem(STORAGE_KEY_CONFIG, JSON.stringify(appConfig));
               }
               if (json.data.layanan && json.data.layanan.length > 0) {
