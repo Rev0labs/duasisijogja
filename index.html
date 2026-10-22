@@ -1443,8 +1443,8 @@
     const STORAGE_KEY_API = "tigatama_api_url_v4";
 
     // URL Google Apps Script Web App (Tersinkronisasi ke seluruh device)
-    // Masukkan Web App URL di sini agar SEMUA browser & HP otomatis tersinkron ke database Spreadsheet!
-    const DEFAULT_API_URL = ""; 
+    // Otomatis digunakan oleh SEMUA browser & HP pengunjung untuk membaca dan menyinkronkan data dari Google Sheets!
+    const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbz1gmhNXbP0n0wxaXxihAYbJdeOybC3W4gWWdn4VQlJILozL7IIeulUab4N1Kv2g5Sl/exec"; 
 
     // Auto-detect ?api= parameter di URL (memudahkan sync antar device via link)
     try {
@@ -1460,7 +1460,11 @@
     let appServices = JSON.parse(JSON.stringify(DEFAULT_SERVICES));
     let appTalents = JSON.parse(JSON.stringify(DEFAULT_TALENTS));
     let appDocs = JSON.parse(JSON.stringify(DEFAULT_DOKUMENTASI));
-    let apiUrl = localStorage.getItem(STORAGE_KEY_API) || localStorage.getItem("tigatama_api_url_v3") || DEFAULT_API_URL || "";
+    let apiUrl = localStorage.getItem(STORAGE_KEY_API);
+    if (!apiUrl || apiUrl.trim() === '') {
+      apiUrl = DEFAULT_API_URL;
+      if (apiUrl) localStorage.setItem(STORAGE_KEY_API, apiUrl);
+    }
     let activeTalentFilter = "all";
 
     // --- 2. INITIAL LOAD FROM LOCAL STORAGE ---
