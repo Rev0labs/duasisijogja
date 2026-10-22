@@ -5,18 +5,19 @@
  * Landing Page Dua Sisi Jogja dari Google Sheets.
  */
 
-// Password default admin untuk validasi simpan (bisa diganti sesuai keinginan)
+// Password default admin untuk validasi simpan
 const ADMIN_PASSWORD = "admin123";
 
 /**
- * Endpoint GET: Mengambil data Pengaturan, Talent, dan Dokumentasi
+ * Endpoint GET: Mengambil data Pengaturan, Layanan, Talent, dan Dokumentasi
  */
 function doGet(e) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    initSheetsIfMissing(ss); // Otomatis buat sheet & data awal jika belum ada
+    initSheetsIfMissing(ss);
     
     const configData = getConfigData(ss);
+    const layananData = getLayananData(ss);
     const talentData = getTalentData(ss);
     const dokumentasiData = getDokumentasiData(ss);
     
@@ -25,6 +26,7 @@ function doGet(e) {
       timestamp: new Date().toISOString(),
       data: {
         config: configData,
+        layanan: layananData,
         talents: talentData,
         dokumentasi: dokumentasiData
       }
@@ -68,12 +70,17 @@ function doPost(e) {
       saveConfigData(ss, payload.config);
     }
     
-    // 2. Simpan Talent
+    // 2. Simpan Layanan
+    if (payload.layanan && Array.isArray(payload.layanan)) {
+      saveLayananData(ss, payload.layanan);
+    }
+    
+    // 3. Simpan Talent
     if (payload.talents && Array.isArray(payload.talents)) {
       saveTalentData(ss, payload.talents);
     }
     
-    // 3. Simpan Dokumentasi
+    // 4. Simpan Dokumentasi
     if (payload.dokumentasi && Array.isArray(payload.dokumentasi)) {
       saveDokumentasiData(ss, payload.dokumentasi);
     }
@@ -107,13 +114,33 @@ function getConfigData(ss) {
   return config;
 }
 
+function getLayananData(ss) {
+  const sheet = ss.getSheetByName("Layanan");
+  if (!sheet) return [];
+  const values = sheet.getDataRange().getValues();
+  const layanan = [];
+  for (let i = 1; i < values.length; i++) {
+    const row = values[i];
+    if (row[0]) {
+      layanan.push({
+        judul: row[0] ? row[0].toString() : "",
+        deskripsi: row[1] ? row[1].toString() : "",
+        poin: row[2] ? row[2].toString() : "",
+        foto: row[3] ? row[3].toString() : "",
+        status: row[4] ? row[4].toString() : "Aktif"
+      });
+    }
+  }
+  return layanan;
+}
+
 function getTalentData(ss) {
   const sheet = ss.getSheetByName("Talent");
   const values = sheet.getDataRange().getValues();
   const talents = [];
   for (let i = 1; i < values.length; i++) {
     const row = values[i];
-    if (row[0]) { // jika nama ada
+    if (row[0]) {
       talents.push({
         nama: row[0] ? row[0].toString() : "",
         kategori: row[1] ? row[1].toString() : "spg",
@@ -151,8 +178,6 @@ function getDokumentasiData(ss) {
 function saveConfigData(ss, config) {
   const sheet = ss.getSheetByName("Pengaturan");
   const keys = Object.keys(config);
-  
-  // Baca existing data
   const existingValues = sheet.getDataRange().getValues();
   const keyRowMap = {};
   for (let i = 1; i < existingValues.length; i++) {
@@ -168,9 +193,28 @@ function saveConfigData(ss, config) {
   });
 }
 
+function saveLayananData(ss, layanan) {
+  const sheet = ss.getSheetByName("Layanan");
+  if (!sheet) return;
+  const lastRow = sheet.getLastRow();
+  if (lastRow > 1) {
+    sheet.getRange(2, 1, lastRow - 1, 5).clearContent();
+  }
+  
+  if (layanan.length > 0) {
+    const rows = layanan.map(l => [
+      l.judul || "",
+      l.deskripsi || "",
+      l.poin || "",
+      l.foto || "",
+      l.status || "Aktif"
+    ]);
+    sheet.getRange(2, 1, rows.length, 5).setValues(rows);
+  }
+}
+
 function saveTalentData(ss, talents) {
   const sheet = ss.getSheetByName("Talent");
-  // Bersihkan data lama mulai baris 2
   const lastRow = sheet.getLastRow();
   if (lastRow > 1) {
     sheet.getRange(2, 1, lastRow - 1, 6).clearContent();
@@ -239,8 +283,25 @@ function initSheetsIfMissing(ss) {
     sheetConfig.getRange(1, 1, 1, 3).setValues(headers).setFontWeight("bold").setBackground("#D4AF37");
     sheetConfig.getRange(2, 1, initialData.length, 3).setValues(initialData);
   }
+
+  // 2. Sheet Layanan
+  let sheetLayanan = ss.getSheetByName("Layanan");
+  if (!sheetLayanan) {
+    sheetLayanan = ss.insertSheet("Layanan");
+    const headers = [["Judul Layanan", "Deskripsi", "Poin-poin Fitur (pisahkan dengan |)", "Link Foto", "Status"]];
+    const initialLayanan = [
+      ["SPG Event & Exhibition", "Sales Promotion Girl profesional untuk pameran otomotif, properti, mall roadshow, dan launching produk. Menguasai product knowledge dan ramah menyapa calon pembeli.", "Pameran & Expo (JEC, Mall, Hotel) | Flyering & Sampling Produk | Direct Selling & Leads Gathering", "", "Aktif"],
+      ["Usher VIP & Penerima Tamu", "Penerima tamu berpenampilan anggun dengan etika protokoler standar tinggi untuk seminar nasional, gala dinner, resepsi pernikahan eksklusif, dan acara kenegaraan.", "Registrasi & Penyambutan Tamu VIP | Pendamping Podium / Plakat Penghargaan | Wedding Reception & Gala Dinner", "", "Aktif"],
+      ["Model Photoshoot & Video", "Model pria & wanita berpengalaman untuk sesi pemotretan fashion, katalog busana, konten video promosi media sosial (TikTok/Reels), dan iklan komersial.", "Foto Katalog Fashion & Brand Lookbook | Talent Video Iklan & Review Produk | Model Make Up Artist (MUA)", "", "Aktif"],
+      ["SPB (Sales Promotion Boy)", "Talent pria berpenampilan rapi, enerjik, dan percaya diri untuk promosi produk otomotif, gadget, merchandise, serta event olahraga/outdoor.", "Event Otomotif & Motorsport | Aktivasi Brand & Roadshow | Booth Assistant Pameran", "", "Aktif"],
+      ["MC & Moderator Event", "Pembawa acara komunikatif yang piawai mencairkan suasana baik untuk format formal (seminar, wisuda) maupun non-formal (gathering, festival, konser).", "MC Formal & Protokoler | MC Entertainment & Gathering | Bilingual (Bahasa Indonesia & English)", "", "Aktif"],
+      ["LO & Event Crew Support", "Tim pendamping tamu VIP/Artis (LO) dan kru lapangan yang tanggap, sigap, dan siap mendukung kelancaran operasional teknis acara Anda.", "Pendamping Tamu VIP / Narasumber | Crowd Control & Ticketing Support | Fleksibel & Tanggap Solusi", "", "Aktif"]
+    ];
+    sheetLayanan.getRange(1, 1, 1, 5).setValues(headers).setFontWeight("bold").setBackground("#D4AF37");
+    sheetLayanan.getRange(2, 1, initialLayanan.length, 5).setValues(initialLayanan);
+  }
   
-  // 2. Sheet Talent
+  // 3. Sheet Talent
   let sheetTalent = ss.getSheetByName("Talent");
   if (!sheetTalent) {
     sheetTalent = ss.insertSheet("Talent");
@@ -257,7 +318,7 @@ function initSheetsIfMissing(ss) {
     sheetTalent.getRange(2, 1, initialTalents.length, 6).setValues(initialTalents);
   }
   
-  // 3. Sheet Dokumentasi
+  // 4. Sheet Dokumentasi
   let sheetDoc = ss.getSheetByName("Dokumentasi");
   if (!sheetDoc) {
     sheetDoc = ss.insertSheet("Dokumentasi");
