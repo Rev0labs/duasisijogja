@@ -1467,12 +1467,19 @@
     }
     let activeTalentFilter = "all";
 
-    // --- 2. INITIAL LOAD FROM LOCAL STORAGE ---
+    // --- 2. INITIAL LOAD FROM LOCAL STORAGE (HANYA CACHE SPREADSHEET, BERSIHKAN BASE64 LOKAL) ---
     try {
-      const savedCfg = localStorage.getItem(STORAGE_KEY_CONFIG) || localStorage.getItem("tigatama_config_v3");
+      // Bersihkan sesi lokal lama yang menyimpan data:image/ agar tidak menimpa spreadsheet
+      [STORAGE_KEY_TALENTS, STORAGE_KEY_CONFIG, STORAGE_KEY_DOCS, STORAGE_KEY_SERVICES, "tigatama_talents_v3", "tigatama_config_v3"].forEach(key => {
+        const val = localStorage.getItem(key);
+        if (val && val.includes('data:image/')) {
+          localStorage.removeItem(key);
+        }
+      });
+
+      const savedCfg = localStorage.getItem(STORAGE_KEY_CONFIG);
       if (savedCfg) {
         appConfig = Object.assign(appConfig, JSON.parse(savedCfg));
-        // Ensure default logo is set if previously empty
         if (!appConfig.logo_url || appConfig.logo_url.trim() === "") {
           appConfig.logo_url = "assets/logo.jpg";
         }
@@ -1480,11 +1487,11 @@
         if (!appConfig.profil_img_2) appConfig.profil_img_2 = DEFAULT_CONFIG.profil_img_2;
         if (!appConfig.profil_img_3) appConfig.profil_img_3 = DEFAULT_CONFIG.profil_img_3;
       }
-      const savedServices = localStorage.getItem(STORAGE_KEY_SERVICES) || localStorage.getItem("tigatama_services_v3");
+      const savedServices = localStorage.getItem(STORAGE_KEY_SERVICES);
       if (savedServices) appServices = JSON.parse(savedServices);
-      const savedTalents = localStorage.getItem(STORAGE_KEY_TALENTS) || localStorage.getItem("tigatama_talents_v3");
+      const savedTalents = localStorage.getItem(STORAGE_KEY_TALENTS);
       if (savedTalents) appTalents = JSON.parse(savedTalents);
-      const savedDocs = localStorage.getItem(STORAGE_KEY_DOCS) || localStorage.getItem("tigatama_docs_v3");
+      const savedDocs = localStorage.getItem(STORAGE_KEY_DOCS);
       if (savedDocs) appDocs = JSON.parse(savedDocs);
     } catch (e) {
       console.warn("Error parsing cache:", e);
@@ -1786,7 +1793,7 @@
       });
     }
 
-    // --- 7. BACKGROUND SYNC FROM GOOGLE APPS SCRIPT ---
+    // --- 7. BACKGROUND SYNC FROM GOOGLE APPS SCRIPT (MURNI DARI SPREADSHEET) ---
     async function syncFromGoogleSheets(forceNotify = false) {
       const activeApi = apiUrl || localStorage.getItem(STORAGE_KEY_API) || DEFAULT_API_URL || "";
       if (!activeApi || activeApi.trim() === '') return false;
@@ -1795,67 +1802,32 @@
         const res = await fetch(fetchUrl);
         const json = await res.json();
         if (json.status === 'success' && json.data) {
-          // 1. Merge Config
-          if (json.data.config) {
-            Object.keys(json.data.config).forEach(k => {
-              const remoteVal = json.data.config[k];
-              const localVal = appConfig[k];
-              if (localVal && typeof localVal === 'string' && localVal.startsWith('data:image/')) {
-                if (remoteVal && (remoteVal.includes('googleusercontent.com') || remoteVal.includes('drive.google.com'))) {
-                  appConfig[k] = remoteVal;
-                }
-              } else if (remoteVal !== undefined && remoteVal !== '') {
-                appConfig[k] = remoteVal;
-              }
-            });
+          // 1. Config Murni Spreadsheet
+          if (json.data.config && Object.keys(json.data.config).length > 0) {
+            appConfig = Object.assign({}, DEFAULT_CONFIG, json.data.config);
             localStorage.setItem(STORAGE_KEY_CONFIG, JSON.stringify(appConfig));
           }
 
-          // 2. Merge Layanan
-          if (json.data.layanan && json.data.layanan.length > 0) {
+          // 2. Layanan Murni Spreadsheet
+          if (json.data.layanan && Array.isArray(json.data.layanan) && json.data.layanan.length > 0) {
             appServices = json.data.layanan;
             localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(appServices));
           }
 
-          // 3. Merge Talents
-          if (json.data.talents && json.data.talents.length > 0) {
-            appTalents = json.data.talents.map((remoteT, idx) => {
-              const localT = appTalents[idx];
-              if (!localT) return remoteT;
-              const merged = Object.assign({}, remoteT);
-              // Jika lokal punya foto base64 baru dan remote belum ter-convert ke Google Drive
-              if (localT.foto && localT.foto.startsWith('data:image/')) {
-                if (remoteT.foto && (remoteT.foto.includes('googleusercontent.com') || remoteT.foto.includes('drive.google.com'))) {
-                  merged.foto = remoteT.foto;
-                } else {
-                  merged.foto = localT.foto; // Tetap pertahankan foto baru lokal
-                }
-              }
-              return merged;
-            });
+          // 3. Talents Murni Spreadsheet (Source of Truth murni Google Sheets & Drive)
+          if (json.data.talents && Array.isArray(json.data.talents) && json.data.talents.length > 0) {
+            appTalents = json.data.talents;
             localStorage.setItem(STORAGE_KEY_TALENTS, JSON.stringify(appTalents));
           }
 
-          // 4. Merge Dokumentasi
-          if (json.data.dokumentasi && json.data.dokumentasi.length > 0) {
-            appDocs = json.data.dokumentasi.map((remoteD, idx) => {
-              const localD = appDocs[idx];
-              if (!localD) return remoteD;
-              const merged = Object.assign({}, remoteD);
-              if (localD.foto && localD.foto.startsWith('data:image/')) {
-                if (remoteD.foto && (remoteD.foto.includes('googleusercontent.com') || remoteD.foto.includes('drive.google.com'))) {
-                  merged.foto = remoteD.foto;
-                } else {
-                  merged.foto = localD.foto;
-                }
-              }
-              return merged;
-            });
+          // 4. Dokumentasi Murni Spreadsheet
+          if (json.data.dokumentasi && Array.isArray(json.data.dokumentasi) && json.data.dokumentasi.length > 0) {
+            appDocs = json.data.dokumentasi;
             localStorage.setItem(STORAGE_KEY_DOCS, JSON.stringify(appDocs));
           }
 
           renderApp();
-          if (forceNotify) showToast("Data berhasil disinkronkan dari Google Sheets!");
+          if (forceNotify) showToast("Data berhasil dimuat murni dari Google Sheets!");
           return true;
         }
       } catch (err) {
@@ -2170,7 +2142,6 @@
         showToast(`Layanan ${newService.judul} berhasil ditambahkan!`);
       }
 
-      localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(appServices));
       highlightSaveButton();
 
       renderAdminServiceList();
@@ -2180,7 +2151,6 @@
 
     window.toggleServiceStatus = function(idx) {
       appServices[idx].status = appServices[idx].status === 'Aktif' ? 'Nonaktif' : 'Aktif';
-      localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(appServices));
       highlightSaveButton();
       renderAdminServiceList();
       renderServices();
@@ -2189,7 +2159,6 @@
     window.deleteService = function(idx) {
       if (confirm(`Hapus layanan ${appServices[idx].judul}?`)) {
         appServices.splice(idx, 1);
-        localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(appServices));
         highlightSaveButton();
         renderAdminServiceList();
         renderServices();
@@ -2305,13 +2274,12 @@
 
       if (editIndex >= 0) {
         appTalents[editIndex] = newTalent;
-        showToast(`Data talent ${newTalent.nama} diperbarui!`);
+        showToast(`Data talent ${newTalent.nama} diubah. Klik 'Simpan Semua' untuk mengirim ke spreadsheet.`);
       } else {
         appTalents.push(newTalent);
-        showToast(`Talent ${newTalent.nama} berhasil ditambahkan!`);
+        showToast(`Talent ${newTalent.nama} ditambahkan. Klik 'Simpan Semua' untuk mengirim ke spreadsheet.`);
       }
 
-      localStorage.setItem(STORAGE_KEY_TALENTS, JSON.stringify(appTalents));
       highlightSaveButton();
 
       renderAdminTalentList();
@@ -2321,7 +2289,6 @@
 
     window.toggleTalentStatus = function(idx) {
       appTalents[idx].status = appTalents[idx].status === 'Aktif' ? 'Nonaktif' : 'Aktif';
-      localStorage.setItem(STORAGE_KEY_TALENTS, JSON.stringify(appTalents));
       highlightSaveButton();
       renderAdminTalentList();
       renderTalents();
@@ -2330,7 +2297,6 @@
     window.deleteTalent = function(idx) {
       if (confirm(`Hapus talent ${appTalents[idx].nama}?`)) {
         appTalents.splice(idx, 1);
-        localStorage.setItem(STORAGE_KEY_TALENTS, JSON.stringify(appTalents));
         highlightSaveButton();
         renderAdminTalentList();
         renderTalents();
@@ -2411,9 +2377,8 @@
       };
 
       appDocs.push(newDoc);
-      localStorage.setItem(STORAGE_KEY_DOCS, JSON.stringify(appDocs));
       highlightSaveButton();
-      showToast(`Dokumentasi ${newDoc.event} ditambahkan!`);
+      showToast(`Dokumentasi ${newDoc.event} ditambahkan. Klik 'Simpan Semua' untuk mengirim ke spreadsheet.`);
       renderAdminDocList();
       renderDokumentasi();
       docModal.classList.add('hidden');
@@ -2422,7 +2387,6 @@
     window.deleteDoc = function(idx) {
       if (confirm(`Hapus foto dokumentasi ${appDocs[idx].event}?`)) {
         appDocs.splice(idx, 1);
-        localStorage.setItem(STORAGE_KEY_DOCS, JSON.stringify(appDocs));
         highlightSaveButton();
         renderAdminDocList();
         renderDokumentasi();
@@ -2459,23 +2423,14 @@
       appConfig.misi_2 = document.getElementById('cfg-misi-2').value.trim() || appConfig.misi_2;
       appConfig.misi_3 = document.getElementById('cfg-misi-3').value.trim() || appConfig.misi_3;
 
-      apiUrl = document.getElementById('cfg-api-url').value.trim();
+      apiUrl = document.getElementById('cfg-api-url').value.trim() || DEFAULT_API_URL;
       localStorage.setItem(STORAGE_KEY_API, apiUrl);
 
-      // Save to localStorage immediately
-      localStorage.setItem(STORAGE_KEY_CONFIG, JSON.stringify(appConfig));
-      localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(appServices));
-      localStorage.setItem(STORAGE_KEY_TALENTS, JSON.stringify(appTalents));
-      localStorage.setItem(STORAGE_KEY_DOCS, JSON.stringify(appDocs));
-
-      // Re-render UI immediately
-      renderApp();
-
-      // Send to Google Sheets if API URL is set
+      // Send to Google Sheets
       const activeApi = apiUrl || DEFAULT_API_URL || "";
       if (activeApi && activeApi.trim() !== '') {
         saveSpinner.classList.remove('hidden');
-        saveText.textContent = "Mengunggah foto & data ke Google Drive...";
+        saveText.textContent = "Mengunggah foto ke Google Drive & menyimpan ke Spreadsheet...";
         saveAllBtn.disabled = true;
 
         try {
@@ -2488,7 +2443,7 @@
           };
 
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 35000);
+          const timeoutId = setTimeout(() => controller.abort(), 40000);
 
           await fetch(activeApi, {
             method: 'POST',
@@ -2501,21 +2456,28 @@
           });
           clearTimeout(timeoutId);
 
-          saveText.textContent = "Menyinkronkan data Google Drive...";
-          await new Promise(r => setTimeout(r, 1500));
-          await syncFromGoogleSheets();
-
-          showToast("Berhasil disimpan ke Google Drive (Folder: TIGATAMA) & Sheets!");
+          saveText.textContent = "Menyinkronkan data langsung dari Google Sheets...";
+          await new Promise(r => setTimeout(r, 2000));
+          
+          // Tarik data MURNI yang sudah ter-update di Google Sheets & Drive
+          const synced = await syncFromGoogleSheets();
+          if (synced) {
+            showToast("✅ Berhasil disimpan ke Google Drive (Folder: TIGATAMA) & Sheets!");
+          } else {
+            showToast("Data tersimpan di Google Sheets!");
+          }
         } catch (err) {
-          console.error("Gagal kirim ke Google Sheets:", err);
-          showToast("Tersimpan di cache lokal! (Periksa URL Apps Script)");
+          console.error("Gagal simpan ke Google Sheets:", err);
+          showToast("❌ Gagal menyimpan ke Google Sheets! Perubahan tidak disimpan.");
+          // Kembalikan ke data spreadsheet asli agar tidak tertinggal di sesi lokal
+          await syncFromGoogleSheets();
         } finally {
           saveSpinner.classList.add('hidden');
           saveText.textContent = "💾 Simpan Semua Perubahan";
           saveAllBtn.disabled = false;
         }
       } else {
-        showToast("Perubahan berhasil disimpan ke Website!");
+        showToast("⚠️ URL Google Apps Script belum terkonfigurasi!");
       }
 
       adminPanelModal.classList.add('hidden');
