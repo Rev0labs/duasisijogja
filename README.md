@@ -33,24 +33,29 @@ Website di-hosting gratis di **GitHub Pages** dan terintegrasi dengan **Google S
 
 ---
 
-## 📊 Cara Pasang Backend Google Sheets (Google Apps Script)
-Jika ingin menghubungkan ke Google Sheets agar data bisa tersimpan secara permanen di akun Google Drive:
+## 📊 Cara Pasang Backend Google Sheets (Google Apps Script & Google Drive)
+Jika ingin menghubungkan ke Google Sheets & Google Drive agar data foto dan profil tersimpan secara permanen:
 
-1. Buka [Google Sheets](https://sheets.new) dan buat spreadsheet baru. Beri judul misalnya: `Database TIGATAMA Organizer`.
+1. Buka [Google Sheets](https://sheets.new) (atau spreadsheet Anda: `DATABASE TIGATAMA`).
 2. Klik menu **Extensions (Ekstensi)** &rarr; **Apps Script**.
 3. Hapus kode bawaan, lalu salin (copy) seluruh isi file:
    📂 `google-apps-script/Code.gs`
    dan paste ke editor Apps Script.
 4. Klik tombol **Save (Simpan / ikon disket)**.
-5. Klik tombol **Deploy (Terapkan)** di pojok kanan atas &rarr; pilih **New deployment (Penerapan baru)**.
-6. Klik ikon gerigi di sebelah *Select type* &rarr; pilih **Web app**.
+5. **Otorisasi Google Drive (PENTING 1x Saja):**
+   - Pada toolbar atas di sebelah tombol Run/Jalankan, pilih fungsi **`testDrivePermission`**.
+   - Klik **Run (Jalankan)**.
+   - Pop-up Google akan muncul: Klik **Review Permissions** &rarr; Pilih akun Google &rarr; Klik **Advanced (Lanjutan)** &rarr; Klik **Go to (Buka)... (unsafe)** &rarr; Klik **Allow (Izinkan)**.
+   - Folder **TIGATAMA** akan otomatis dibuat di Google Drive Anda.
+6. Klik tombol **Deploy (Terapkan)** di pojok kanan atas &rarr; pilih **New deployment (Penerapan baru)** (atau *Manage deployments* &rarr; *Edit* &rarr; *New version* jika sudah pernah deploy).
 7. Konfigurasi:
-   - **Description**: `API TIGATAMA Organizer`
+   - **Description**: `API TIGATAMA Organizer & Drive`
    - **Execute as**: `Me (email Anda)`
    - **Who has access**: **`Anyone` (Siapa saja)** *(PENTING agar website bisa membaca data)*
-8. Klik **Deploy** &rarr; Berikan izin akses Google (*Authorize access*).
-9. Salin (Copy) **Web App URL** yang dihasilkan (format: `https://script.google.com/macros/s/.../exec`).
-10. Buka website TIGATAMA &rarr; Buka **Admin Config** &rarr; Buka tab **🔗 Koneksi Spreadsheet** &rarr; Tempelkan URL tersebut &rarr; Klik **Simpan**.
+8. Klik **Deploy** &rarr; Salin (Copy) **Web App URL** yang dihasilkan (format: `https://script.google.com/macros/s/.../exec`).
+9. **Sinkronisasi ke Seluruh Perangkat (HP / Laptop Lain):**
+   - Masukkan Web App URL tersebut ke variabel `DEFAULT_API_URL` pada baris 1445 file `index.html`, lalu push ke GitHub. Dengan cara ini, **setiap orang / HP / browser lain yang membuka website akan otomatis langsung membaca data terbaru dari Google Sheets & Drive!**
+   - Atau tempelkan Web App URL tersebut di **Panel Admin &rarr; Koneksi Spreadsheet** &rarr; Klik **Simpan**.
 
 *Catatan: Saat script pertama kali berjalan, tab `Pengaturan`, `Layanan`, `Talent`, dan `Dokumentasi` di Google Sheets akan otomatis dibuat beserta data awalnya!*
 

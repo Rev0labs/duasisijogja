@@ -2,11 +2,28 @@
  * GOOGLE APPS SCRIPT - BACKEND TIGATAMA TALENT & EVENT ORGANIZER
  * 
  * Script ini berfungsi sebagai API (Backend CMS) untuk membaca dan menyimpan data
- * Landing Page TIGATAMA dari Google Sheets.
+ * Landing Page TIGATAMA dari Google Sheets dan menyimpan foto ke Google Drive (Folder: TIGATAMA).
  */
 
 // Password default admin untuk validasi simpan
 const ADMIN_PASSWORD = "TIGAtama@123";
+const DRIVE_FOLDER_NAME = "TIGATAMA";
+
+/**
+ * FUNGSI TEST OTORISASI GOOGLE DRIVE
+ * Jalankan fungsi ini 1x di Apps Script Editor (pilih testDrivePermission lalu klik 'Run'/'Jalankan')
+ * untuk memberikan izin akses Google Drive agar script bisa menyimpan foto upload ke folder TIGATAMA.
+ */
+function testDrivePermission() {
+  try {
+    const folder = getOrCreateDriveFolder();
+    Logger.log("SUKSES: Folder TIGATAMA berhasil diakses/dibuat di Drive! URL: " + folder.getUrl());
+    return "OK: Izin Google Drive berhasil aktif! Foto akan otomatis disimpan ke folder TIGATAMA.";
+  } catch (e) {
+    Logger.log("ERROR Otorisasi: " + e.toString());
+    throw e;
+  }
+}
 
 /**
  * Endpoint GET: Mengambil data Pengaturan, Layanan, Talent, dan Dokumentasi
@@ -154,8 +171,6 @@ function doPost(e) {
 
 // ================= GOOGLE DRIVE ASSET STORAGE ================= //
 
-const DRIVE_FOLDER_NAME = "TIGATAMA";
-
 /**
  * Mendapatkan atau membuat folder TIGATAMA di Google Drive dan set permission public view
  */
@@ -215,14 +230,34 @@ function processAndSaveImageIfBase64(imageData, prefix) {
     return `https://lh3.googleusercontent.com/d/${fileId}`;
   } catch (err) {
     Logger.log("Error save to Drive: " + err.toString());
-    return imageData; // Fallback gunakan data lama jika terjadi kendala akses Drive
+    // Proteksi: Jangan biarkan string Base64 raksasa > 40.000 karakter masuk ke Google Sheets karena limit sel adalah 50.000 karakter
+    if (imageData.length > 40000) {
+      return ""; // Hindari crash sel Google Sheets
+    }
+    return imageData;
   }
+}
+
+/**
+ * Helper untuk memastikan nilai tidak melebihi batas 45.000 karakter sel Google Sheets
+ */
+function safeCell(val) {
+  if (val === null || val === undefined) return "";
+  const str = String(val);
+  if (str.length > 45000) {
+    if (str.startsWith("data:image/")) {
+      return "";
+    }
+    return str.substring(0, 45000);
+  }
+  return str;
 }
 
 // ================= BACA DATA ================= //
 
 function getConfigData(ss) {
   const sheet = ss.getSheetByName("Pengaturan");
+  if (!sheet) return {};
   const values = sheet.getDataRange().getValues();
   const config = {};
   for (let i = 1; i < values.length; i++) {
@@ -257,6 +292,7 @@ function getLayananData(ss) {
 
 function getTalentData(ss) {
   const sheet = ss.getSheetByName("Talent");
+  if (!sheet) return [];
   const values = sheet.getDataRange().getValues();
   const talents = [];
   for (let i = 1; i < values.length; i++) {
@@ -277,6 +313,7 @@ function getTalentData(ss) {
 
 function getDokumentasiData(ss) {
   const sheet = ss.getSheetByName("Dokumentasi");
+  if (!sheet) return [];
   const values = sheet.getDataRange().getValues();
   const docs = [];
   for (let i = 1; i < values.length; i++) {
@@ -298,6 +335,7 @@ function getDokumentasiData(ss) {
 
 function saveConfigData(ss, config) {
   const sheet = ss.getSheetByName("Pengaturan");
+  if (!sheet) return;
   const keys = Object.keys(config);
   const existingValues = sheet.getDataRange().getValues();
   const keyRowMap = {};
@@ -306,10 +344,11 @@ function saveConfigData(ss, config) {
   }
   
   keys.forEach(k => {
+    const val = safeCell(config[k]);
     if (keyRowMap[k]) {
-      sheet.getRange(keyRowMap[k], 2).setValue(config[k]);
+      sheet.getRange(keyRowMap[k], 2).setValue(val);
     } else {
-      sheet.appendRow([k, config[k], ""]);
+      sheet.appendRow([k, val, ""]);
     }
   });
 }
@@ -324,11 +363,11 @@ function saveLayananData(ss, layanan) {
   
   if (layanan.length > 0) {
     const rows = layanan.map(l => [
-      l.judul || "",
-      l.deskripsi || "",
-      l.poin || "",
-      l.foto || "",
-      l.status || "Aktif"
+      safeCell(l.judul),
+      safeCell(l.deskripsi),
+      safeCell(l.poin),
+      safeCell(l.foto),
+      safeCell(l.status || "Aktif")
     ]);
     sheet.getRange(2, 1, rows.length, 5).setValues(rows);
   }
@@ -336,6 +375,7 @@ function saveLayananData(ss, layanan) {
 
 function saveTalentData(ss, talents) {
   const sheet = ss.getSheetByName("Talent");
+  if (!sheet) return;
   const lastRow = sheet.getLastRow();
   if (lastRow > 1) {
     sheet.getRange(2, 1, lastRow - 1, 6).clearContent();
@@ -343,12 +383,12 @@ function saveTalentData(ss, talents) {
   
   if (talents.length > 0) {
     const rows = talents.map(t => [
-      t.nama || "",
-      t.kategori || "spg",
-      t.tinggi || "",
-      t.deskripsi || "",
-      t.foto || "",
-      t.status || "Aktif"
+      safeCell(t.nama),
+      safeCell(t.kategori || "spg"),
+      safeCell(t.tinggi),
+      safeCell(t.deskripsi),
+      safeCell(t.foto),
+      safeCell(t.status || "Aktif")
     ]);
     sheet.getRange(2, 1, rows.length, 6).setValues(rows);
   }
@@ -356,6 +396,7 @@ function saveTalentData(ss, talents) {
 
 function saveDokumentasiData(ss, docs) {
   const sheet = ss.getSheetByName("Dokumentasi");
+  if (!sheet) return;
   const lastRow = sheet.getLastRow();
   if (lastRow > 1) {
     sheet.getRange(2, 1, lastRow - 1, 5).clearContent();
@@ -363,11 +404,11 @@ function saveDokumentasiData(ss, docs) {
   
   if (docs.length > 0) {
     const rows = docs.map(d => [
-      d.event || "",
-      d.kategori || "Event",
-      d.keterangan || "",
-      d.foto || "",
-      d.status || "Aktif"
+      safeCell(d.event),
+      safeCell(d.kategori || "Event"),
+      safeCell(d.keterangan),
+      safeCell(d.foto),
+      safeCell(d.status || "Aktif")
     ]);
     sheet.getRange(2, 1, rows.length, 5).setValues(rows);
   }
