@@ -1,8 +1,8 @@
 /**
- * GOOGLE APPS SCRIPT - BACKEND DUA SISI JOGJA
+ * GOOGLE APPS SCRIPT - BACKEND TIGATAMA TALENT & EVENT ORGANIZER
  * 
- * Script ini berfungsi sebagai API (Backend) untuk membaca dan menyimpan data
- * Landing Page Dua Sisi Jogja dari Google Sheets.
+ * Script ini berfungsi sebagai API (Backend CMS) untuk membaca dan menyimpan data
+ * Landing Page TIGATAMA dari Google Sheets.
  */
 
 // Password default admin untuk validasi simpan
