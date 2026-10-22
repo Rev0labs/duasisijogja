@@ -1,58 +1,67 @@
-# Landing Page Agensi - Dua Sisi Jogja
+# Landing Page Agensi - Dua Sisi Jogja (Dinamis + Admin Panel)
 
-Landing page responsif, modern, dan ringan untuk agensi talent, usher, dan SPG event **Dua Sisi Jogja**. 
-Dibuat dengan HTML5, Tailwind CSS (via CDN), dan JavaScript murni. Siap di-deploy secara gratis ke **GitHub Pages**.
+Landing page responsif, modern, dan dinamis untuk agensi talent, usher, dan SPG event **Dua Sisi Jogja**. 
+Website di-hosting gratis di **GitHub Pages** dan terintegrasi dengan **Google Sheets & Google Apps Script** sebagai database CMS.
 
 ---
 
-## 📁 Struktur Direktori
-```text
-dua-sisi-jogja/
-├── index.html        # Halaman utama landing page
-├── README.md         # Petunjuk penggunaan & deployment
-└── backups/          # Folder restore point per sesi modifikasi
+## 🌟 Fitur Utama
+1. **Frontend Modern (GitHub Pages - Rp 0 Selamanya):**
+   - Single-page responsive (mobile-friendly).
+   - Fast loading & SEO/OpenGraph preview untuk WhatsApp / Medsos.
+2. **Katalog Talent Dinamis:**
+   - Filter instan kategori: *Semua*, *SPG Event*, *Usher VIP*, *Model & MC*.
+   - Tombol direct booking WhatsApp per talent.
+3. **Dokumentasi Kegiatan Event Dinamis:**
+   - Menampilkan portofolio foto acara nyata.
+4. **Panel Admin / Config Terintegrasi di Halaman Index (`index.html`):**
+   - Tombol **Admin Config** tersembunyi di footer halaman.
+   - Diproteksi Password (Default: `admin123`).
+   - Bisa ganti: Logo, Nomor WhatsApp (otomatis merubah semua tombol), Akun IG, TikTok, Lokasi, Jam Kerja, Banner Headline, Deskripsi, Visi Misi.
+   - Bisa **Tambah, Edit, Nonaktifkan, & Hapus Talent** kapan saja.
+   - Bisa **Tambah & Hapus Foto Dokumentasi Kegiatan**.
+   - Menyimpan ke cache lokal dan langsung ke Google Sheets!
+
+---
+
+## 🔑 Akses Panel Admin di Website
+1. Buka website di browser: `https://rev0labs.github.io/duasisijogja/` (atau buka `index.html` lokal).
+2. Scroll ke bagian paling bawah (**Footer**).
+3. Klik tombol **`[🔒 Admin Config]`** di samping kanan teks copyright.
+4. Masukkan password: **`admin123`** lalu klik **Buka Panel Config**.
+5. Silakan ubah data, tambah talent, atau ganti nomor WhatsApp, lalu klik **💾 Simpan Perubahan**.
+
+---
+
+## 📊 Cara Pasang Backend Google Sheets (Google Apps Script)
+Jika ingin menghubungkan ke Google Sheets agar data bisa tersimpan secara permanen di akun Google Drive:
+
+1. Buka [Google Sheets](https://sheets.new) dan buat spreadsheet baru. Beri judul misalnya: `Database Dua Sisi Jogja`.
+2. Klik menu **Extensions (Ekstensi)** &rarr; **Apps Script**.
+3. Hapus kode bawaan, lalu salin (copy) seluruh isi file:
+   📂 `google-apps-script/Code.gs`
+   dan paste ke editor Apps Script.
+4. Klik tombol **Save (Simpan / ikon disket)**.
+5. Klik tombol **Deploy (Terapkan)** di pojok kanan atas &rarr; pilih **New deployment (Penerapan baru)**.
+6. Klik ikon gerigi di sebelah *Select type* &rarr; pilih **Web app**.
+7. Konfigurasi:
+   - **Description**: `API Dua Sisi Jogja`
+   - **Execute as**: `Me (email Anda)`
+   - **Who has access**: **`Anyone` (Siapa saja)** *(PENTING agar website bisa membaca data)*
+8. Klik **Deploy** &rarr; Berikan izin akses Google (*Authorize access*).
+9. Salin (Copy) **Web App URL** yang dihasilkan (format: `https://script.google.com/macros/s/.../exec`).
+10. Buka website Dua Sisi Jogja &rarr; Buka **Admin Config** &rarr; Buka tab **🔗 Koneksi Spreadsheet** &rarr; Tempelkan URL tersebut &rarr; Klik **Simpan**.
+
+*Catatan: Saat script pertama kali berjalan, tab `Pengaturan`, `Talent`, dan `Dokumentasi` di Google Sheets akan otomatis dibuat beserta data awalnya!*
+
+---
+
+## 🚀 Cara Push Pembaruan Ini ke GitHub
+Buka PowerShell di komputer Anda:
+```powershell
+cd "C:\Users\junre\.gemini\antigravity\scratch\dua-sisi-jogja"
+git add .
+git commit -m "Add dynamic CMS, Admin Config panel, and Google Apps Script integration"
+git push origin main
 ```
-
----
-
-## 🚀 Cara Melihat Hasil di Komputer Lokal
-1. Buka File Explorer di: `C:\Users\junre\.gemini\antigravity\scratch\dua-sisi-jogja\`
-2. Klik ganda file `index.html`. Halaman akan langsung terbuka di browser (Chrome, Edge, Firefox, dll).
-
----
-
-## 🌐 Menjawab Pertanyaan Akun GitHub & Multi-Project
-
-### 1. Bisakah Pakai Akun GitHub Pribadi Anda?
-**Bisa 100%!** Anda tidak perlu membuat akun GitHub baru untuk klien ini.
-
-### 2. Apakah 1 Akun GitHub Bisa untuk Beberapa Project Landing Page?
-**Bisa dan tanpa batas (Unlimited Repositories)!**
-GitHub Pages memiliki sistem Project Pages:
-* Setiap klien atau project baru dibuatkan **1 repositori terpisah**.
-  * Contoh project 1: `dua-sisi-jogja` -> URL: `https://username.github.io/dua-sisi-jogja/`
-  * Contoh project 2: `katering-jogja` -> URL: `https://username.github.io/katering-jogja/`
-  * Contoh project 3: `wedding-organizer` -> URL: `https://username.github.io/wedding-organizer/`
-* Masing-masing repositori tersebut bisa dipasangi **Custom Domain sendiri-sendiri**!
-  * `dua-sisi-jogja` bisa diarahkan ke `duasisijogja.com`
-  * Repositori lain bisa diarahkan ke domain masing-masing.
-
----
-
-## 🛠️ Cara Deploy ke GitHub Pages (Langkah Praktis)
-1. Buka [github.com](https://github.com) dan login ke akun Anda.
-2. Buat repositori baru (misalnya dengan nama `dua-sisi-jogja`), centang *Public*.
-3. Upload file `index.html` ke repositori tersebut.
-4. Buka tab **Settings** di repositori tersebut -> klik menu **Pages** (di sisi kiri).
-5. Pada bagian **Build and deployment**:
-   * *Source*: Pilih **Deploy from a branch**
-   * *Branch*: Pilih **main** / **root** lalu klik **Save**.
-6. Tunggu 1–2 menit, website Anda sudah online di:
-   `https://username.github.io/dua-sisi-jogja/`
-7. *(Jika klien beli domain)*: Masukkan nama domain klien di kolom **Custom domain** di menu Pages tersebut, lalu centang **Enforce HTTPS**.
-
----
-
-## ✏️ Cara Mengubah Data Klien (Teks / Foto / Nomor WA)
-* **Nomor WhatsApp**: Cari teks `6281234567890` di `index.html` dan ganti dengan nomor admin Dua Sisi Jogja.
-* **Foto**: Ganti link `https://images.unsplash.com/...` di bagian galeri atau simpan file foto di folder proyek dan panggil dengan `<img src="assets/foto1.jpg">`.
+Tunggu 1 menit, dan website di `https://rev0labs.github.io/duasisijogja/` akan otomatis ter-update dengan fitur baru ini!
