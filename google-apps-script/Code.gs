@@ -65,6 +65,51 @@ function doPost(e) {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     initSheetsIfMissing(ss);
     
+    // 0. Proses otomatis seluruh foto Base64 dan simpan ke Google Drive (Folder: TIGATAMA)
+    if (payload.config) {
+      if (payload.config.logo_url) {
+        payload.config.logo_url = processAndSaveImageIfBase64(payload.config.logo_url, "logo_tigatama");
+      }
+      if (payload.config.hero_image) {
+        payload.config.hero_image = processAndSaveImageIfBase64(payload.config.hero_image, "hero_banner");
+      }
+      if (payload.config.profil_img_1) {
+        payload.config.profil_img_1 = processAndSaveImageIfBase64(payload.config.profil_img_1, "profil_1");
+      }
+      if (payload.config.profil_img_2) {
+        payload.config.profil_img_2 = processAndSaveImageIfBase64(payload.config.profil_img_2, "profil_2");
+      }
+      if (payload.config.profil_img_3) {
+        payload.config.profil_img_3 = processAndSaveImageIfBase64(payload.config.profil_img_3, "profil_3");
+      }
+    }
+    
+    if (payload.layanan && Array.isArray(payload.layanan)) {
+      payload.layanan.forEach((l, idx) => {
+        if (l.foto) {
+          l.foto = processAndSaveImageIfBase64(l.foto, `layanan_${idx + 1}`);
+        }
+      });
+    }
+    
+    if (payload.talents && Array.isArray(payload.talents)) {
+      payload.talents.forEach((t, idx) => {
+        if (t.foto) {
+          const cleanName = (t.nama || `talent_${idx + 1}`).toLowerCase().replace(/[^a-z0-9]/g, "_");
+          t.foto = processAndSaveImageIfBase64(t.foto, cleanName);
+        }
+      });
+    }
+    
+    if (payload.dokumentasi && Array.isArray(payload.dokumentasi)) {
+      payload.dokumentasi.forEach((d, idx) => {
+        if (d.foto) {
+          const cleanEvent = (d.event || `dok_${idx + 1}`).toLowerCase().replace(/[^a-z0-9]/g, "_");
+          d.foto = processAndSaveImageIfBase64(d.foto, cleanEvent);
+        }
+      });
+    }
+    
     // 1. Simpan Pengaturan
     if (payload.config) {
       saveConfigData(ss, payload.config);
@@ -87,7 +132,13 @@ function doPost(e) {
     
     return ContentService.createTextOutput(JSON.stringify({
       status: "success",
-      message: "Data website Dua Sisi Jogja berhasil disimpan!"
+      message: "Data dan foto berhasil disimpan ke Google Drive (Folder: TIGATAMA) dan Google Sheets!",
+      data: {
+        config: payload.config,
+        layanan: payload.layanan,
+        talents: payload.talents,
+        dokumentasi: payload.dokumentasi
+      }
     })).setMimeType(ContentService.MimeType.JSON);
     
   } catch (err) {
@@ -95,6 +146,73 @@ function doPost(e) {
       status: "error",
       message: err.toString()
     })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ================= GOOGLE DRIVE ASSET STORAGE ================= //
+
+const DRIVE_FOLDER_NAME = "TIGATAMA";
+
+/**
+ * Mendapatkan atau membuat folder TIGATAMA di Google Drive dan set permission public view
+ */
+function getOrCreateDriveFolder() {
+  const folders = DriveApp.getFoldersByName(DRIVE_FOLDER_NAME);
+  let folder;
+  if (folders.hasNext()) {
+    folder = folders.next();
+  } else {
+    folder = DriveApp.createFolder(DRIVE_FOLDER_NAME);
+  }
+  
+  // Set izin folder agar siapapun yang memiliki link bisa melihat foto
+  try {
+    folder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  } catch (err) {
+    Logger.log("Folder setSharing note: " + err.toString());
+  }
+  return folder;
+}
+
+/**
+ * Menyimpan data gambar Base64 ke folder Google Drive dan mengembalikan URL publik langsung (CDN lh3)
+ */
+function processAndSaveImageIfBase64(imageData, prefix) {
+  if (!imageData || typeof imageData !== 'string') return imageData;
+  
+  // Hanya proses jika data berupa Base64 (data:image/...)
+  if (!imageData.startsWith("data:image/")) {
+    return imageData; // Sudah berupa URL biasa (http/https/assets/...)
+  }
+  
+  try {
+    const folder = getOrCreateDriveFolder();
+    
+    // Ekstrak MIME type dan Base64 string
+    const parts = imageData.split(",");
+    if (parts.length < 2) return imageData;
+    
+    const mimeMatch = parts[0].match(/:(.*?);/);
+    const mimeType = mimeMatch ? mimeMatch[1] : "image/jpeg";
+    const extension = (mimeType.split("/")[1] || "jpg").replace("+xml", "");
+    const base64Data = parts[1];
+    
+    const decodedBytes = Utilities.base64Decode(base64Data);
+    const safePrefix = (prefix || "foto").replace(/[^a-zA-Z0-9_-]/g, "_");
+    const fileName = `${safePrefix}_${new Date().getTime()}.${extension}`;
+    const blob = Utilities.newBlob(decodedBytes, mimeType, fileName);
+    
+    const file = folder.createFile(blob);
+    try {
+      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    } catch (e) {}
+    
+    const fileId = file.getId();
+    // Gunakan URL CDN Google User Content agar gambar bisa tampil di tag <img> tanpa terblokir cookie
+    return `https://lh3.googleusercontent.com/d/${fileId}`;
+  } catch (err) {
+    Logger.log("Error save to Drive: " + err.toString());
+    return imageData; // Fallback gunakan data lama jika terjadi kendala akses Drive
   }
 }
 
