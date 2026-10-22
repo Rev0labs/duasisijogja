@@ -26,7 +26,7 @@ Website di-hosting gratis di **GitHub Pages** dan terintegrasi dengan **Google S
 ---
 
 ## 🔑 Akses Panel Admin di Website
-1. Buka website di browser: `https://rev0labs.github.io/tigatama/` (atau buka `index.html` lokal).
+1. Buka website di browser: `https://tigatama.com/` (atau `https://rev0labs.github.io/tigatama/`).
 2. Klik ikon **Gembok (🔒)** kecil di pojok kanan atas navbar (atau tombol Admin di top announcement bar).
 3. Masukkan password: **`TIGAtama@123`** lalu klik **Buka Panel Config**.
 4. Silakan ubah data, upload foto talent/logo/hero/profil, atau kelola layanan, lalu klik **💾 Simpan Semua Perubahan**.
@@ -67,4 +67,4 @@ Buka PowerShell di komputer Anda:
 cd "C:\Users\junre\.gemini\antigravity\scratch\dua-sisi-jogja"
 git push origin main
 ```
-Tunggu 1 menit, dan website di `https://rev0labs.github.io/tigatama/` akan otomatis aktif/ter-update!
+Tunggu 1 menit, dan website di `https://tigatama.com/` (dan `https://rev0labs.github.io/tigatama/`) akan otomatis aktif/ter-update!
