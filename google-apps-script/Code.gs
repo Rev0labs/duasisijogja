@@ -36,6 +36,7 @@ function doGet(e) {
     const configData = getConfigData(ss);
     const layananData = getLayananData(ss);
     const talentData = getTalentData(ss);
+    const armadaData = getArmadaData(ss);
     const dokumentasiData = getDokumentasiData(ss);
     
     const response = {
@@ -45,6 +46,7 @@ function doGet(e) {
         config: configData,
         layanan: layananData,
         talents: talentData,
+        armada: armadaData,
         dokumentasi: dokumentasiData
       }
     };
@@ -117,6 +119,15 @@ function doPost(e) {
         }
       });
     }
+
+    if (payload.armada && Array.isArray(payload.armada)) {
+      payload.armada.forEach((a, idx) => {
+        if (a.foto) {
+          const cleanName = (a.nama || `armada_${idx + 1}`).toLowerCase().replace(/[^a-z0-9]/g, "_");
+          a.foto = processAndSaveImageIfBase64(a.foto, cleanName);
+        }
+      });
+    }
     
     if (payload.dokumentasi && Array.isArray(payload.dokumentasi)) {
       payload.dokumentasi.forEach((d, idx) => {
@@ -141,8 +152,13 @@ function doPost(e) {
     if (payload.talents && Array.isArray(payload.talents)) {
       saveTalentData(ss, payload.talents);
     }
+
+    // 4. Simpan Armada Transportasi
+    if (payload.armada && Array.isArray(payload.armada)) {
+      saveArmadaData(ss, payload.armada);
+    }
     
-    // 4. Simpan Dokumentasi
+    // 5. Simpan Dokumentasi
     if (payload.dokumentasi && Array.isArray(payload.dokumentasi)) {
       saveDokumentasiData(ss, payload.dokumentasi);
     }
@@ -157,6 +173,7 @@ function doPost(e) {
         config: payload.config,
         layanan: payload.layanan,
         talents: payload.talents,
+        armada: payload.armada,
         dokumentasi: payload.dokumentasi
       }
     })).setMimeType(ContentService.MimeType.JSON);
@@ -311,6 +328,27 @@ function getTalentData(ss) {
   return talents;
 }
 
+function getArmadaData(ss) {
+  const sheet = ss.getSheetByName("Armada");
+  if (!sheet) return [];
+  const values = sheet.getDataRange().getValues();
+  const armada = [];
+  for (let i = 1; i < values.length; i++) {
+    const row = values[i];
+    if (row[0]) {
+      armada.push({
+        nama: row[0] ? row[0].toString() : "",
+        kategori: row[1] ? row[1].toString() : "Minibus / Van",
+        kapasitas: row[2] ? row[2].toString() : "",
+        fasilitas: row[3] ? row[3].toString() : "",
+        foto: row[4] ? row[4].toString() : "",
+        status: row[5] ? row[5].toString() : "Aktif"
+      });
+    }
+  }
+  return armada;
+}
+
 function getDokumentasiData(ss) {
   const sheet = ss.getSheetByName("Dokumentasi");
   if (!sheet) return [];
@@ -389,6 +427,27 @@ function saveTalentData(ss, talents) {
       safeCell(t.deskripsi),
       safeCell(t.foto),
       safeCell(t.status || "Aktif")
+    ]);
+    sheet.getRange(2, 1, rows.length, 6).setValues(rows);
+  }
+}
+
+function saveArmadaData(ss, armada) {
+  const sheet = ss.getSheetByName("Armada");
+  if (!sheet) return;
+  const lastRow = sheet.getLastRow();
+  if (lastRow > 1) {
+    sheet.getRange(2, 1, lastRow - 1, 6).clearContent();
+  }
+  
+  if (armada.length > 0) {
+    const rows = armada.map(a => [
+      safeCell(a.nama),
+      safeCell(a.kategori || "Minibus / Van"),
+      safeCell(a.kapasitas),
+      safeCell(a.fasilitas),
+      safeCell(a.foto),
+      safeCell(a.status || "Aktif")
     ]);
     sheet.getRange(2, 1, rows.length, 6).setValues(rows);
   }
@@ -495,5 +554,20 @@ function initSheetsIfMissing(ss) {
     ];
     sheetDoc.getRange(1, 1, 1, 5).setValues(headers).setFontWeight("bold").setBackground("#D4AF37");
     sheetDoc.getRange(2, 1, initialDocs.length, 5).setValues(initialDocs);
+  }
+
+  // 5. Sheet Armada Transportasi
+  let sheetArmada = ss.getSheetByName("Armada");
+  if (!sheetArmada) {
+    sheetArmada = ss.insertSheet("Armada");
+    const headers = [["Nama Armada", "Kategori (Van/MPV/Bus/dll)", "Kapasitas (Kursi)", "Fasilitas & Keterangan", "Link Foto", "Status (Aktif/Nonaktif)"]];
+    const initialArmada = [
+      ["Toyota HiAce Premio Luxury", "Minibus / Van", "11 - 14 Kursi", "Termasuk Driver Berpengalaman & BBM | Full AC Dingin | Reclining Seats | Audio Bluetooth & USB Charger", "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=700&auto=format&fit=crop", "Aktif"],
+      ["Toyota Alphard Transformer VIP", "Luxury VIP MPV", "4 - 6 Kursi", "Captain Seat Kulit Mewah | Sunroof & Ambient Light | Driver Beretika Protokoler | Privasi & Kenyamanan Maksimal", "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=700&auto=format&fit=crop", "Aktif"],
+      ["Toyota Innova Zenix / Reborn", "Medium MPV", "6 - 7 Kursi", "Kabin Luas & Senyap | AC Double Blower Dingin | Perjalanan Dinas, Artis & Tamu VIP | Bagasi Fleksibel", "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?q=80&w=700&auto=format&fit=crop", "Aktif"],
+      ["Medium Bus Pariwisata", "Bus Pariwisata", "30 - 35 Kursi", "Konfigurasi 2-2 Kursi Nyaman | Audio Karaoke & TV LED | Bagasi Luas | Cocok untuk Rombongan Kru & Event Tour", "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=700&auto=format&fit=crop", "Aktif"]
+    ];
+    sheetArmada.getRange(1, 1, 1, 6).setValues(headers).setFontWeight("bold").setBackground("#D4AF37");
+    sheetArmada.getRange(2, 1, initialArmada.length, 6).setValues(initialArmada);
   }
 }

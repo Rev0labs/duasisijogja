@@ -9,19 +9,20 @@ Website di-hosting gratis di **GitHub Pages** dan terintegrasi dengan **Google S
 1. **Frontend Modern & Mewah (GitHub Pages - Rp 0 Selamanya):**
    - Single-page responsive (mobile-friendly) dengan tema luxury black & gold sesuai logo resmi TIGATAMA.
    - Fast loading & SEO/OpenGraph preview untuk WhatsApp / Medsos menggunakan logo resmi.
-2. **Katalog Talent Dinamis:**
-   - Filter instan kategori: *Semua*, *SPG Event*, *Usher VIP*, *Model & MC*.
-   - Tombol direct booking WhatsApp per talent.
+2. **Katalog Talent & Armada Transportasi Dinamis:**
+   - Navigasi header menuju **Katalog** dengan tab switcher interaktif: **Katalog Talent** & **Armada Transportasi**.
+   - Filter instan kategori talent dan kategori armada secara otomatis dan fleksibel.
+   - Tombol direct booking WhatsApp per talent dan per armada (HiAce, Alphard, Innova, Bus, dll).
 3. **Dokumentasi Kegiatan Event Dinamis:**
    - Menampilkan portofolio foto acara nyata.
 4. **Panel Admin / Config Terintegrasi di Halaman Index (`index.html`):**
    - Tombol login admin berupa ikon gembok kecil elegan di pojok kanan atas navbar (tidak mengganggu layout).
    - Sidebar admin di sisi kiri yang rapi dan bisa di-collapse/hide menjadi icon saja.
-   - Modal edit talent lengkap dalam satu popup (bisa ubah semua info sekaligus).
+   - Modal edit talent dan modal edit armada lengkap dalam popup (bisa tambah, ubah, dan hapus unit armada).
    - Fitur **Upload Foto langsung** dari HP/laptop dengan kompresi otomatis (tidak perlu paste URL gambar manual).
    - Layanan agensi dinamis (bisa tambah, edit, atau nonaktifkan layanan).
    - Diproteksi Password Admin (`TIGAtama@123`).
-   - Menyimpan ke cache lokal dan langsung tersinkron ke Google Sheets!
+   - Menyimpan ke cache lokal dan langsung tersinkron ke Google Sheets & Google Drive!
 
 ---
 
@@ -57,7 +58,7 @@ Jika ingin menghubungkan ke Google Sheets & Google Drive agar data foto dan prof
    - Masukkan Web App URL tersebut ke variabel `DEFAULT_API_URL` pada baris 1445 file `index.html`, lalu push ke GitHub. Dengan cara ini, **setiap orang / HP / browser lain yang membuka website akan otomatis langsung membaca data terbaru dari Google Sheets & Drive!**
    - Atau tempelkan Web App URL tersebut di **Panel Admin &rarr; Koneksi Spreadsheet** &rarr; Klik **Simpan**.
 
-*Catatan: Saat script pertama kali berjalan, tab `Pengaturan`, `Layanan`, `Talent`, dan `Dokumentasi` di Google Sheets akan otomatis dibuat beserta data awalnya!*
+*Catatan: Saat script pertama kali berjalan, tab `Pengaturan`, `Layanan`, `Talent`, `Armada`, dan `Dokumentasi` di Google Sheets akan otomatis dibuat beserta data awalnya!*
 
 ---
 

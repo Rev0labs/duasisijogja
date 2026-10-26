@@ -143,7 +143,7 @@
           <a href="#profil" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Profil</a>
           <a href="#visi-misi" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Visi & Misi</a>
           <a href="#layanan" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Layanan</a>
-          <a href="#galeri" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Katalog Talent</a>
+          <a href="#katalog" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Katalog</a>
           <a href="#dokumentasi" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Dokumentasi</a>
           <a href="#cara-pesan" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Alur Booking</a>
           <a href="#kontak" class="whitespace-nowrap px-1.5 py-1 text-slate-300 hover:text-amber-400 transition-colors">Kontak</a>
@@ -190,7 +190,7 @@
       <a href="#profil" class="mobile-nav-link block py-2 text-slate-300 hover:text-amber-400 font-medium">Profil Agensi</a>
       <a href="#visi-misi" class="mobile-nav-link block py-2 text-slate-300 hover:text-amber-400 font-medium">Visi & Misi</a>
       <a href="#layanan" class="mobile-nav-link block py-2 text-slate-300 hover:text-amber-400 font-medium">Layanan Kami</a>
-      <a href="#galeri" class="mobile-nav-link block py-2 text-slate-300 hover:text-amber-400 font-medium">Katalog Talent</a>
+      <a href="#katalog" class="mobile-nav-link block py-2 text-slate-300 hover:text-amber-400 font-medium">Katalog (Talent & Armada)</a>
       <a href="#dokumentasi" class="mobile-nav-link block py-2 text-slate-300 hover:text-amber-400 font-medium">Dokumentasi Event</a>
       <a href="#cara-pesan" class="mobile-nav-link block py-2 text-slate-300 hover:text-amber-400 font-medium">Alur Pemesanan</a>
       <a href="#kontak" class="mobile-nav-link block py-2 text-slate-300 hover:text-amber-400 font-medium">Kontak & Lokasi</a>
@@ -237,9 +237,9 @@
               <span>Konsultasi Kebutuhan Event</span>
             </a>
             
-            <a href="#galeri" 
+            <a href="#katalog" 
                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-semibold text-base border border-slate-700 hover:border-slate-600 transition-all">
-              <span>Lihat Katalog Talent</span>
+              <span>Lihat Katalog</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </a>
           </div>
@@ -452,43 +452,90 @@
     </div>
   </section>
 
-  <!-- SECTION: KATALOG TALENT (DINAMIS DARI GOOGLE SHEETS) -->
-  <section id="galeri" class="py-20 relative">
+  <!-- SECTION: KATALOG TALENT & ARMADA TRANSPORTASI (DINAMIS DARI GOOGLE SHEETS) -->
+  <section id="katalog" class="py-20 relative scroll-mt-20">
+    <!-- Anchor aliases for direct links / hash backward compatibility -->
+    <div id="galeri" class="absolute -top-24"></div>
+    <div id="armada" class="absolute -top-24"></div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="text-center max-w-3xl mx-auto mb-10">
         <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider mb-3">
-          Katalog Talent Siap Kerja
+          Katalog Pilihan TIGATAMA
         </div>
         <h2 class="text-2xl sm:text-4xl font-extrabold text-white">
-          Daftar Talent TIGATAMA
+          Katalog Talent & Armada Transportasi
         </h2>
         <p class="mt-4 text-slate-400 text-sm sm:text-base">
-          Pilihan talent terkurasi siap mendukung event pameran, expo, usher protokoler, maupun photoshoot Anda.
+          Pilihan talent terkurasi siap kerja serta unit armada transportasi prima untuk mendukung kelancaran seluruh kebutuhan event & perjalanan Anda.
         </p>
 
-        <!-- Category Filters (Dinamis dari Input Kategori Talent) -->
-        <div id="talent-filter-container" class="flex flex-wrap items-center justify-center gap-2 mt-8">
-          <!-- Rendered dynamically by JavaScript -->
+        <!-- Main Switcher: Talent vs Armada -->
+        <div class="inline-flex p-1.5 bg-slate-900/90 border border-slate-800 rounded-2xl shadow-xl mt-8 gap-2">
+          <button id="btn-tab-talent" class="catalog-main-tab active px-5 sm:px-7 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-lg shadow-amber-500/20">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <span>Katalog Talent</span>
+            <span id="badge-count-talent" class="px-2 py-0.5 rounded-full text-[10px] bg-slate-950/30 text-slate-950 font-black"></span>
+          </button>
+          <button id="btn-tab-armada" class="catalog-main-tab px-5 sm:px-7 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2.5 bg-transparent text-slate-300 hover:text-white hover:bg-slate-800">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            <span>Armada Transportasi</span>
+            <span id="badge-count-armada" class="px-2 py-0.5 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-black"></span>
+          </button>
         </div>
       </div>
 
-      <!-- Talent Dynamic Grid Container -->
-      <div id="talent-grid" class="flex flex-wrap justify-center gap-6">
-        <!-- Rendered by JavaScript dynamically -->
+      <!-- VIEW 1: KATALOG TALENT -->
+      <div id="view-katalog-talent" class="space-y-8">
+        <!-- Category Filters (Dinamis dari Input Kategori Talent) -->
+        <div id="talent-filter-container" class="flex flex-wrap items-center justify-center gap-2">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+
+        <!-- Talent Dynamic Grid Container -->
+        <div id="talent-grid" class="flex flex-wrap justify-center gap-6">
+          <!-- Rendered by JavaScript dynamically -->
+        </div>
+
+        <!-- Notice for full catalog talent -->
+        <div class="mt-12 text-center p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 max-w-xl mx-auto">
+          <p class="text-sm text-slate-300">
+            Butuh kriteria khusus atau ingin melihat compcard & portofolio talent lengkap kami?
+          </p>
+          <a id="catalog-wa-link" href="https://wa.me/6281234567890?text=Halo%20Admin%20TIGATAMA,%20boleh%20minta%20katalog%20dan%20compcard%20talent%20lengkapnya?" 
+             target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 mt-3 text-amber-400 hover:text-amber-300 font-bold text-sm">
+            <span>Minta Katalog & Compcard Lengkap via WA</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
       </div>
 
-      <!-- Notice for full catalog -->
-      <div class="mt-12 text-center p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 max-w-xl mx-auto">
-        <p class="text-sm text-slate-300">
-          Butuh kriteria khusus atau ingin melihat compcard & portofolio talent lengkap kami?
-        </p>
-        <a id="catalog-wa-link" href="https://wa.me/6281234567890?text=Halo%20Admin%20TIGATAMA,%20boleh%20minta%20katalog%20dan%20compcard%20talent%20lengkapnya?" 
-           target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-2 mt-3 text-amber-400 hover:text-amber-300 font-bold text-sm">
-          <span>Minta Katalog & Compcard Lengkap via WA</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
+      <!-- VIEW 2: KATALOG ARMADA TRANSPORTASI -->
+      <div id="view-katalog-armada" class="hidden space-y-8">
+        <!-- Category Filters (Dinamis dari Input Kategori Armada) -->
+        <div id="armada-filter-container" class="flex flex-wrap items-center justify-center gap-2">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+
+        <!-- Armada Dynamic Grid Container -->
+        <div id="armada-grid" class="flex flex-wrap justify-center gap-6">
+          <!-- Rendered by JavaScript dynamically -->
+        </div>
+
+        <!-- Notice for armada transport -->
+        <div class="mt-12 text-center p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 max-w-xl mx-auto">
+          <p class="text-sm text-slate-300">
+            Butuh unit armada khusus, antar-jemput artis/tamu VIP, atau sewa bus pariwisata luar kota?
+          </p>
+          <a id="armada-wa-link" href="https://wa.me/6281234567890?text=Halo%20Admin%20TIGATAMA,%20saya%20ingin%20tanya%20sewa%20armada%20transportasi" 
+             target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 mt-3 text-amber-400 hover:text-amber-300 font-bold text-sm">
+            <span>Konsultasi & Booking Armada via WA</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
       </div>
 
     </div>
@@ -781,6 +828,11 @@
               <span class="tab-label truncate">Manajemen Talent</span>
             </button>
 
+            <button class="tab-btn config-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-colors text-slate-400 hover:bg-slate-800/80 hover:text-white" data-tab="tab-armada" title="Armada Transportasi">
+              <span class="text-base shrink-0">🚐</span>
+              <span class="tab-label truncate">Armada Transportasi</span>
+            </button>
+
             <button class="tab-btn config-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-colors text-slate-400 hover:bg-slate-800/80 hover:text-white" data-tab="tab-dokumentasi" title="Foto Dokumentasi">
               <span class="text-base shrink-0">📸</span>
               <span class="tab-label truncate">Foto Dokumentasi</span>
@@ -996,7 +1048,25 @@
             </div>
           </div>
 
-          <!-- TAB 5: FOTO DOKUMENTASI -->
+          <!-- TAB 5: MANAJEMEN ARMADA TRANSPORTASI -->
+          <div id="tab-armada" class="config-tab-content hidden space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div>
+                <h4 class="text-base font-bold text-white">Daftar Armada Transportasi</h4>
+                <p class="text-xs text-slate-400">Kelola unit kendaraan (HiAce, Alphard, Innova, Bus, dll), kapasitas, dan fasilitas</p>
+              </div>
+              <button id="open-add-armada-btn" class="px-3.5 py-2 rounded-xl gradient-gold text-slate-950 font-bold text-xs flex items-center gap-1.5 hover:scale-105 transition-transform shadow-md">
+                <span>+ Tambah Armada Baru</span>
+              </button>
+            </div>
+
+            <!-- Armada List Container -->
+            <div id="admin-armada-list" class="space-y-3">
+              <!-- Dynamic items rendered by JS -->
+            </div>
+          </div>
+
+          <!-- TAB 6: FOTO DOKUMENTASI -->
           <div id="tab-dokumentasi" class="config-tab-content hidden space-y-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
@@ -1168,6 +1238,90 @@
           </button>
           <button type="submit" class="px-6 py-2 rounded-xl gradient-gold text-slate-950 text-xs font-bold shadow-md hover:scale-105 transition-transform">
             Simpan Data Talent
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL KHUSUS: TAMBAH / EDIT ARMADA TRANSPORTASI -->
+  <!-- ======================================================== -->
+  <div id="armada-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      
+      <div class="px-6 py-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between shrink-0">
+        <h3 id="armada-modal-title" class="text-base font-bold text-white">Tambah Armada Baru</h3>
+        <button id="close-armada-modal-btn" class="text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="armada-form" class="p-6 overflow-y-auto modal-scroll space-y-4 flex-1">
+        <input type="hidden" id="armada-edit-index" value="-1">
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Nama Armada / Kendaraan *</label>
+          <input type="text" id="form-armada-nama" required placeholder="Contoh: Toyota HiAce Premio Luxury" 
+                 class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Kategori Armada *</label>
+            <input type="text" id="form-armada-kategori" required placeholder="Ketik kategori" list="armada-category-suggestions"
+                   class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs sm:text-sm focus:border-amber-400 focus:outline-none">
+            <datalist id="armada-category-suggestions">
+              <option value="Minibus / Van">
+              <option value="Luxury VIP MPV">
+              <option value="Medium MPV">
+              <option value="City Car & MPV">
+              <option value="Bus Pariwisata Medium">
+              <option value="Big Bus Executive">
+            </datalist>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Kapasitas Kursi *</label>
+            <input type="text" id="form-armada-kapasitas" required placeholder="Contoh: 11 - 14 Kursi" 
+                   class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs sm:text-sm focus:border-amber-400 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Fasilitas & Keterangan</label>
+          <textarea id="form-armada-fasilitas" rows="2" placeholder="Contoh: Termasuk Driver & BBM | Full AC | Reclining Seats | Audio & Charger"
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs sm:text-sm focus:border-amber-400 focus:outline-none"></textarea>
+          <p class="text-[11px] text-slate-400 mt-1">Gunakan tanda pipa (|) untuk memisahkan poin-poin fasilitas agar tampil rapi sebagai bullet list.</p>
+        </div>
+
+        <!-- UPLOAD FOTO ARMADA -->
+        <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700 space-y-3">
+          <label class="block text-xs font-semibold text-slate-300">Foto Armada *</label>
+          <div class="flex items-center gap-4">
+            <img id="form-armada-preview" src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=700&auto=format&fit=crop" 
+                 alt="Preview" class="w-24 h-18 rounded-xl object-cover bg-slate-900 border border-slate-700 shrink-0 shadow">
+            <div class="flex-1 space-y-2">
+              <input type="file" id="form-armada-file" accept="image/*" class="block w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+              <input type="text" id="form-armada-url" placeholder="Atau paste URL foto..." class="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-amber-400">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Status Ketersediaan</label>
+          <select id="form-armada-status" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+            <option value="Aktif">Aktif (Tampil di website)</option>
+            <option value="Nonaktif">Nonaktif (Sembunyikan sementara)</option>
+          </select>
+        </div>
+
+        <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-800">
+          <button type="button" id="cancel-armada-modal-btn" class="px-5 py-2 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-semibold">
+            Batal
+          </button>
+          <button type="submit" class="px-6 py-2 rounded-xl gradient-gold text-slate-950 text-xs font-bold shadow-md hover:scale-105 transition-transform">
+            Simpan Data Armada
           </button>
         </div>
       </form>
@@ -1447,10 +1601,46 @@
       }
     ];
 
+    const DEFAULT_ARMADA = [
+      {
+        nama: "Toyota HiAce Premio Luxury",
+        kategori: "Minibus / Van",
+        kapasitas: "11 - 14 Kursi",
+        fasilitas: "Termasuk Driver Berpengalaman & BBM | Full AC Dingin | Reclining Seats | Audio Bluetooth & USB Charger",
+        foto: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=700&auto=format&fit=crop",
+        status: "Aktif"
+      },
+      {
+        nama: "Toyota Alphard Transformer VIP",
+        kategori: "Luxury VIP MPV",
+        kapasitas: "4 - 6 Kursi",
+        fasilitas: "Captain Seat Kulit Mewah | Sunroof & Ambient Light | Driver Beretika Protokoler | Privasi & Kenyamanan Maksimal",
+        foto: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=700&auto=format&fit=crop",
+        status: "Aktif"
+      },
+      {
+        nama: "Toyota Innova Zenix / Reborn",
+        kategori: "Medium MPV",
+        kapasitas: "6 - 7 Kursi",
+        fasilitas: "Kabin Luas & Senyap | AC Double Blower Dingin | Perjalanan Dinas, Artis & Tamu VIP | Bagasi Fleksibel",
+        foto: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?q=80&w=700&auto=format&fit=crop",
+        status: "Aktif"
+      },
+      {
+        nama: "Medium Bus Pariwisata",
+        kategori: "Bus Pariwisata",
+        kapasitas: "30 - 35 Kursi",
+        fasilitas: "Konfigurasi 2-2 Kursi Nyaman | Audio Karaoke & TV LED | Bagasi Luas | Cocok untuk Rombongan Kru & Event Tour",
+        foto: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=700&auto=format&fit=crop",
+        status: "Aktif"
+      }
+    ];
+
     // Storage Keys (v4 for TIGATAMA with official logo)
     const STORAGE_KEY_CONFIG = "tigatama_config_v4";
     const STORAGE_KEY_SERVICES = "tigatama_services_v4";
     const STORAGE_KEY_TALENTS = "tigatama_talents_v4";
+    const STORAGE_KEY_ARMADA = "tigatama_armada_v4";
     const STORAGE_KEY_DOCS = "tigatama_docs_v4";
     const STORAGE_KEY_API = "tigatama_api_url_v4";
 
@@ -1471,6 +1661,7 @@
     let appConfig = Object.assign({}, DEFAULT_CONFIG);
     let appServices = JSON.parse(JSON.stringify(DEFAULT_SERVICES));
     let appTalents = JSON.parse(JSON.stringify(DEFAULT_TALENTS));
+    let appArmada = JSON.parse(JSON.stringify(DEFAULT_ARMADA));
     let appDocs = JSON.parse(JSON.stringify(DEFAULT_DOKUMENTASI));
     let apiUrl = localStorage.getItem(STORAGE_KEY_API);
     if (!apiUrl || apiUrl.trim() === '') {
@@ -1478,11 +1669,12 @@
       if (apiUrl) localStorage.setItem(STORAGE_KEY_API, apiUrl);
     }
     let activeTalentFilter = "all";
+    let activeArmadaFilter = "all";
 
     // --- 2. INITIAL LOAD FROM LOCAL STORAGE (HANYA CACHE SPREADSHEET, BERSIHKAN BASE64 LOKAL) ---
     try {
       // Bersihkan sesi lokal lama yang menyimpan data:image/ agar tidak menimpa spreadsheet
-      [STORAGE_KEY_TALENTS, STORAGE_KEY_CONFIG, STORAGE_KEY_DOCS, STORAGE_KEY_SERVICES, "tigatama_talents_v3", "tigatama_config_v3"].forEach(key => {
+      [STORAGE_KEY_TALENTS, STORAGE_KEY_ARMADA, STORAGE_KEY_CONFIG, STORAGE_KEY_DOCS, STORAGE_KEY_SERVICES, "tigatama_talents_v3", "tigatama_config_v3"].forEach(key => {
         const val = localStorage.getItem(key);
         if (val && val.includes('data:image/')) {
           localStorage.removeItem(key);
@@ -1503,6 +1695,8 @@
       if (savedServices) appServices = JSON.parse(savedServices);
       const savedTalents = localStorage.getItem(STORAGE_KEY_TALENTS);
       if (savedTalents) appTalents = JSON.parse(savedTalents);
+      const savedArmada = localStorage.getItem(STORAGE_KEY_ARMADA);
+      if (savedArmada) appArmada = JSON.parse(savedArmada);
       const savedDocs = localStorage.getItem(STORAGE_KEY_DOCS);
       if (savedDocs) appDocs = JSON.parse(savedDocs);
     } catch (e) {
@@ -1585,6 +1779,18 @@
       document.getElementById('cta-bottom-wa').href = generalWaUrl;
       document.getElementById('floating-wa-btn').href = generalWaUrl;
       document.getElementById('catalog-wa-link').href = `https://wa.me/${cleanWa}?text=Halo%20Admin%20${encodeURIComponent(brandName)},%20boleh%20minta%20katalog%20dan%20compcard%20talent%20lengkapnya?`;
+      const armadaWaLinkEl = document.getElementById('armada-wa-link');
+      if (armadaWaLinkEl) {
+        armadaWaLinkEl.href = `https://wa.me/${cleanWa}?text=Halo%20Admin%20${encodeURIComponent(brandName)},%20saya%20ingin%20tanya%20sewa%20armada%20transportasi`;
+      }
+
+      // Update Catalog Switcher Badge Counts
+      const activeTalentsCount = appTalents.filter(t => t.status !== 'Nonaktif').length;
+      const activeArmadaCount = appArmada.filter(a => a.status !== 'Nonaktif').length;
+      const badgeTalent = document.getElementById('badge-count-talent');
+      if (badgeTalent) badgeTalent.textContent = activeTalentsCount;
+      const badgeArmada = document.getElementById('badge-count-armada');
+      if (badgeArmada) badgeArmada.textContent = activeArmadaCount;
 
       // 3. Hero Texts & Golden Highlight on Headline
       document.getElementById('hero-badge-text').textContent = appConfig.hero_badge;
@@ -1641,7 +1847,11 @@
       renderTalentCategoryFilters();
       renderTalents();
 
-      // 8. Render Dynamic Dokumentasi
+      // 8. Render Dynamic Armada Filters & Armada
+      renderArmadaCategoryFilters();
+      renderArmada();
+
+      // 9. Render Dynamic Dokumentasi
       renderDokumentasi();
     }
 
@@ -1823,7 +2033,187 @@
       });
     }
 
-    // --- 7. RENDER DOKUMENTASI GRID ---
+    // --- 7. RENDER DYNAMIC ARMADA CATEGORY FILTERS ---
+    function renderArmadaCategoryFilters() {
+      const filterContainer = document.getElementById('armada-filter-container');
+      if (!filterContainer) return;
+
+      const activeArmada = appArmada.filter(a => a.status !== 'Nonaktif');
+      const categoriesSet = new Set();
+      activeArmada.forEach(a => {
+        const cat = (a.kategori || '').trim();
+        if (cat) categoriesSet.add(cat);
+      });
+      const uniqueCategories = Array.from(categoriesSet);
+
+      if (activeArmadaFilter !== 'all' && !uniqueCategories.some(c => c.toLowerCase() === activeArmadaFilter.toLowerCase())) {
+        activeArmadaFilter = 'all';
+      }
+
+      filterContainer.innerHTML = '';
+
+      // Tombol Semua Armada
+      const allBtn = document.createElement('button');
+      const isAllActive = activeArmadaFilter === 'all';
+      allBtn.className = `armada-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all ${
+        isAllActive ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'bg-slate-800 text-slate-300 hover:text-white'
+      }`;
+      allBtn.textContent = 'Semua Armada';
+      allBtn.addEventListener('click', () => {
+        activeArmadaFilter = 'all';
+        renderArmadaCategoryFilters();
+        renderArmada();
+      });
+      filterContainer.appendChild(allBtn);
+
+      // Tombol per kategori unik armada
+      uniqueCategories.forEach(cat => {
+        const btn = document.createElement('button');
+        const isActive = activeArmadaFilter.toLowerCase() === cat.toLowerCase();
+        btn.className = `armada-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all ${
+          isActive ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'bg-slate-800 text-slate-300 hover:text-white'
+        }`;
+        btn.textContent = cat;
+        btn.addEventListener('click', () => {
+          activeArmadaFilter = cat;
+          renderArmadaCategoryFilters();
+          renderArmada();
+        });
+        filterContainer.appendChild(btn);
+      });
+    }
+
+    // --- 8. RENDER ARMADA GRID ---
+    function renderArmada() {
+      const container = document.getElementById('armada-grid');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const activeArmada = appArmada.filter(a => a.status !== 'Nonaktif');
+      const filtered = activeArmada.filter(a => {
+        if (activeArmadaFilter === 'all') return true;
+        return (a.kategori || '').trim().toLowerCase() === activeArmadaFilter.toLowerCase();
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="w-full py-12 text-center text-slate-500 text-sm">
+            Belum ada armada dalam kategori ini. Silakan tambahkan lewat Panel Admin.
+          </div>
+        `;
+        return;
+      }
+
+      const cleanWa = (appConfig.nomor_wa || "6281234567890").replace(/\D/g, '');
+      const brandName = appConfig.nama_agensi || "TIGATAMA";
+
+      filtered.forEach(a => {
+        const card = document.createElement('div');
+        card.className = "w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm group relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 transition-all duration-300 hover:border-amber-500/50 hover:-translate-y-1 flex flex-col justify-between";
+
+        const waBookingArmada = `https://wa.me/${cleanWa}?text=Halo%20Admin%20${encodeURIComponent(brandName)},%20saya%20tertarik%20sewa/booking%20armada%20${encodeURIComponent(a.nama)}`;
+
+        const fasilitasArray = (a.fasilitas || "").split('|').map(p => p.trim()).filter(p => p.length > 0);
+        let fasilitasHtml = '';
+        if (fasilitasArray.length > 0) {
+          fasilitasHtml = `<ul class="text-xs text-slate-400 space-y-1.5 mb-4">` +
+            fasilitasArray.map(f => `<li class="flex items-center gap-2"><span class="text-amber-400">✓</span> ${escapeHtml(f)}</li>`).join('') +
+            `</ul>`;
+        }
+
+        card.innerHTML = `
+          <div>
+            <div class="relative h-56 overflow-hidden">
+              <img src="${a.foto}" alt="${escapeHtml(a.nama)}" loading="lazy"
+                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80"></div>
+
+              <div class="absolute top-3 left-3">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-950/80 text-amber-300 border border-slate-700/80 backdrop-blur-md">
+                  <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                  ${escapeHtml(a.kapasitas || "Standar")}
+                </span>
+              </div>
+
+              <div class="absolute top-3 right-3">
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/30 text-amber-300 border border-amber-500/40 backdrop-blur-md">
+                  ${escapeHtml(a.kategori || "Armada")}
+                </span>
+              </div>
+            </div>
+
+            <div class="p-6">
+              <h4 class="text-base font-bold text-white mb-3">${escapeHtml(a.nama)}</h4>
+              ${fasilitasHtml}
+            </div>
+          </div>
+
+          <div class="p-6 pt-0">
+            <div class="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
+              <span class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Unit Siap Jalan
+              </span>
+              <a href="${waBookingArmada}" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md transition-colors">
+                <span>Sewa Armada</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </a>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // --- 9. KATALOG MAIN TAB SWITCHER (TALENT VS ARMADA) ---
+    function setupCatalogTabs() {
+      const btnTalent = document.getElementById('btn-tab-talent');
+      const btnArmada = document.getElementById('btn-tab-armada');
+      const viewTalent = document.getElementById('view-katalog-talent');
+      const viewArmada = document.getElementById('view-katalog-armada');
+
+      if (!btnTalent || !btnArmada || !viewTalent || !viewArmada) return;
+
+      function switchCatalogTab(tab) {
+        if (tab === 'armada') {
+          btnTalent.classList.remove('bg-gradient-to-r', 'from-amber-500', 'to-amber-600', 'text-slate-950', 'shadow-lg', 'shadow-amber-500/20');
+          btnTalent.classList.add('bg-transparent', 'text-slate-300');
+          
+          btnArmada.classList.remove('bg-transparent', 'text-slate-300');
+          btnArmada.classList.add('bg-gradient-to-r', 'from-amber-500', 'to-amber-600', 'text-slate-950', 'shadow-lg', 'shadow-amber-500/20');
+
+          viewTalent.classList.add('hidden');
+          viewArmada.classList.remove('hidden');
+        } else {
+          btnArmada.classList.remove('bg-gradient-to-r', 'from-amber-500', 'to-amber-600', 'text-slate-950', 'shadow-lg', 'shadow-amber-500/20');
+          btnArmada.classList.add('bg-transparent', 'text-slate-300');
+          
+          btnTalent.classList.remove('bg-transparent', 'text-slate-300');
+          btnTalent.classList.add('bg-gradient-to-r', 'from-amber-500', 'to-amber-600', 'text-slate-950', 'shadow-lg', 'shadow-amber-500/20');
+
+          viewArmada.classList.add('hidden');
+          viewTalent.classList.remove('hidden');
+        }
+      }
+
+      btnTalent.addEventListener('click', () => switchCatalogTab('talent'));
+      btnArmada.addEventListener('click', () => switchCatalogTab('armada'));
+
+      // URL Hash detector
+      function checkHash() {
+        const hash = (window.location.hash || '').toLowerCase();
+        if (hash === '#armada' || hash === '#katalog-armada') {
+          switchCatalogTab('armada');
+        } else if (hash === '#talent' || hash === '#galeri' || hash === '#katalog-talent') {
+          switchCatalogTab('talent');
+        }
+      }
+
+      window.addEventListener('hashchange', checkHash);
+      checkHash();
+    }
+
+    // --- 10. RENDER DOKUMENTASI GRID ---
     function renderDokumentasi() {
       const container = document.getElementById('dokumentasi-grid');
       container.innerHTML = '';
@@ -1886,7 +2276,13 @@
             localStorage.setItem(STORAGE_KEY_TALENTS, JSON.stringify(appTalents));
           }
 
-          // 4. Dokumentasi Murni Spreadsheet
+          // 4. Armada Murni Spreadsheet
+          if (json.data.armada && Array.isArray(json.data.armada) && json.data.armada.length > 0) {
+            appArmada = json.data.armada;
+            localStorage.setItem(STORAGE_KEY_ARMADA, JSON.stringify(appArmada));
+          }
+
+          // 5. Dokumentasi Murni Spreadsheet
           if (json.data.dokumentasi && Array.isArray(json.data.dokumentasi) && json.data.dokumentasi.length > 0) {
             appDocs = json.data.dokumentasi;
             localStorage.setItem(STORAGE_KEY_DOCS, JSON.stringify(appDocs));
@@ -2013,6 +2409,7 @@
       // 4. Render Admin Lists
       renderAdminServiceList();
       renderAdminTalentList();
+      renderAdminArmadaList();
       renderAdminDocList();
 
       adminPanelModal.classList.remove('hidden');
@@ -2354,10 +2751,160 @@
         renderTalentCategoryFilters();
         renderAdminTalentList();
         renderTalents();
+        renderApp();
       }
     };
 
-    // --- 12. MANAJEMEN DOKUMENTASI VIA MODAL & UPLOAD ---
+    // --- 12. MANAJEMEN ARMADA TRANSPORTASI VIA MODAL & UPLOAD FOTO ---
+    const armadaModal = document.getElementById('armada-modal');
+    const openAddArmadaBtn = document.getElementById('open-add-armada-btn');
+    const closeArmadaModalBtn = document.getElementById('close-armada-modal-btn');
+    const cancelArmadaModalBtn = document.getElementById('cancel-armada-modal-btn');
+    const armadaForm = document.getElementById('armada-form');
+    const formArmadaFile = document.getElementById('form-armada-file');
+    const formArmadaPreview = document.getElementById('form-armada-preview');
+    const formArmadaUrl = document.getElementById('form-armada-url');
+
+    function renderAdminArmadaList() {
+      const container = document.getElementById('admin-armada-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      appArmada.forEach((a, idx) => {
+        const item = document.createElement('div');
+        item.className = "p-3.5 rounded-xl bg-slate-800/80 border border-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3";
+        item.innerHTML = `
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <img src="${a.foto}" alt="${escapeHtml(a.nama)}" class="w-14 h-11 rounded-lg object-cover shrink-0 border border-slate-600">
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-sm font-bold text-white">${escapeHtml(a.nama)}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.status === 'Aktif' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}">
+                  ${escapeHtml(a.status || 'Aktif')}
+                </span>
+                <span class="px-2 py-0.5 rounded text-[10px] bg-slate-700 text-amber-300">
+                  ${escapeHtml(a.kategori)}
+                </span>
+                <span class="px-2 py-0.5 rounded text-[10px] bg-slate-700/80 text-slate-300">
+                  👥 ${escapeHtml(a.kapasitas || "-")}
+                </span>
+              </div>
+              <div class="text-xs text-slate-400 mt-1 line-clamp-1">${escapeHtml(a.fasilitas || "Tanpa keterangan fasilitas")}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+            <button onclick="toggleArmadaStatus(${idx})" class="px-2.5 py-1 rounded text-xs font-semibold ${a.status === 'Aktif' ? 'bg-slate-700 text-slate-300 hover:text-white' : 'bg-emerald-500/20 text-emerald-400'}">
+              ${a.status === 'Aktif' ? 'Nonaktifkan' : 'Aktifkan'}
+            </button>
+            <button onclick="openEditArmadaModal(${idx})" class="px-2.5 py-1 rounded bg-slate-700 text-amber-400 hover:bg-slate-600 text-xs font-semibold">
+              Edit
+            </button>
+            <button onclick="deleteArmada(${idx})" class="px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 text-xs font-semibold">
+              Hapus
+            </button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    formArmadaFile.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        showToast("⏳ Memproses & mengompresi foto armada...");
+        const base64 = await compressImageFile(file, 700, 0.8);
+        formArmadaUrl.value = base64;
+        formArmadaPreview.src = base64;
+        showToast("✅ Foto armada siap (100%)! Klik 'Simpan Data Armada'.");
+      }
+    });
+
+    formArmadaUrl.addEventListener('input', (e) => {
+      formArmadaPreview.src = e.target.value;
+    });
+
+    openAddArmadaBtn.addEventListener('click', () => {
+      document.getElementById('armada-edit-index').value = "-1";
+      document.getElementById('armada-modal-title').textContent = "Tambah Armada Baru";
+      document.getElementById('form-armada-nama').value = "";
+      document.getElementById('form-armada-kategori').value = "";
+      document.getElementById('form-armada-kapasitas').value = "";
+      document.getElementById('form-armada-fasilitas').value = "";
+      formArmadaUrl.value = "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=700&auto=format&fit=crop";
+      formArmadaPreview.src = formArmadaUrl.value;
+      formArmadaFile.value = "";
+      document.getElementById('form-armada-status').value = "Aktif";
+      armadaModal.classList.remove('hidden');
+    });
+
+    closeArmadaModalBtn.addEventListener('click', () => armadaModal.classList.add('hidden'));
+    cancelArmadaModalBtn.addEventListener('click', () => armadaModal.classList.add('hidden'));
+
+    window.openEditArmadaModal = function(idx) {
+      const a = appArmada[idx];
+      document.getElementById('armada-edit-index').value = idx;
+      document.getElementById('armada-modal-title').textContent = `Edit Armada: ${a.nama}`;
+      document.getElementById('form-armada-nama').value = a.nama || "";
+      document.getElementById('form-armada-kategori').value = a.kategori || "";
+      document.getElementById('form-armada-kapasitas').value = a.kapasitas || "";
+      document.getElementById('form-armada-fasilitas').value = a.fasilitas || "";
+      formArmadaUrl.value = a.foto || "";
+      formArmadaPreview.src = a.foto || "";
+      formArmadaFile.value = "";
+      document.getElementById('form-armada-status').value = a.status || "Aktif";
+      armadaModal.classList.remove('hidden');
+    };
+
+    armadaForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const editIndex = parseInt(document.getElementById('armada-edit-index').value, 10);
+      const newArmada = {
+        nama: document.getElementById('form-armada-nama').value.trim(),
+        kategori: document.getElementById('form-armada-kategori').value.trim() || "Minibus / Van",
+        kapasitas: document.getElementById('form-armada-kapasitas').value.trim() || "Standar",
+        fasilitas: document.getElementById('form-armada-fasilitas').value.trim(),
+        foto: formArmadaUrl.value.trim() || formArmadaPreview.src,
+        status: document.getElementById('form-armada-status').value
+      };
+
+      if (editIndex >= 0) {
+        appArmada[editIndex] = newArmada;
+        showToast(`Data armada ${newArmada.nama} diubah. Klik 'Simpan Semua' untuk mengirim ke spreadsheet.`);
+      } else {
+        appArmada.push(newArmada);
+        showToast(`Armada ${newArmada.nama} ditambahkan. Klik 'Simpan Semua' untuk mengirim ke spreadsheet.`);
+      }
+
+      highlightSaveButton();
+
+      renderArmadaCategoryFilters();
+      renderAdminArmadaList();
+      renderArmada();
+      renderApp();
+      armadaModal.classList.add('hidden');
+    });
+
+    window.toggleArmadaStatus = function(idx) {
+      appArmada[idx].status = appArmada[idx].status === 'Aktif' ? 'Nonaktif' : 'Aktif';
+      highlightSaveButton();
+      renderArmadaCategoryFilters();
+      renderAdminArmadaList();
+      renderArmada();
+      renderApp();
+    };
+
+    window.deleteArmada = function(idx) {
+      if (confirm(`Hapus armada ${appArmada[idx].nama}?`)) {
+        appArmada.splice(idx, 1);
+        highlightSaveButton();
+        renderArmadaCategoryFilters();
+        renderAdminArmadaList();
+        renderArmada();
+        renderApp();
+      }
+    };
+
+    // --- 13. MANAJEMEN DOKUMENTASI VIA MODAL & UPLOAD ---
     const docModal = document.getElementById('doc-modal');
     const openAddDocBtn = document.getElementById('open-add-doc-btn');
     const closeDocModalBtn = document.getElementById('close-doc-modal-btn');
@@ -2508,6 +3055,7 @@
 
       apiUrl = document.getElementById('cfg-api-url').value.trim() || DEFAULT_API_URL;
       localStorage.setItem(STORAGE_KEY_API, apiUrl);
+      localStorage.setItem(STORAGE_KEY_ARMADA, JSON.stringify(appArmada));
 
       // Send to Google Sheets
       const activeApi = apiUrl || DEFAULT_API_URL || "";
@@ -2533,6 +3081,7 @@
             config: appConfig,
             layanan: appServices,
             talents: appTalents,
+            armada: appArmada,
             dokumentasi: appDocs
           };
 
@@ -2670,6 +3219,7 @@
 
     // Start App
     renderApp();
+    setupCatalogTabs();
     syncFromGoogleSheets();
   </script>
 </body>
