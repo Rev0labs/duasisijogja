@@ -1300,7 +1300,7 @@
           <label class="block text-xs font-semibold text-slate-300">Foto Armada *</label>
           <div class="flex items-center gap-4">
             <img id="form-armada-preview" src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=700&auto=format&fit=crop" 
-                 alt="Preview" class="w-24 h-18 rounded-xl object-cover bg-slate-900 border border-slate-700 shrink-0 shadow">
+                 alt="Preview" class="w-20 h-20 rounded-xl object-cover bg-slate-900 border border-slate-700 shrink-0 shadow">
             <div class="flex-1 space-y-2">
               <input type="file" id="form-armada-file" accept="image/*" class="block w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
               <input type="text" id="form-armada-url" placeholder="Atau paste URL foto..." class="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-amber-400">
@@ -2123,19 +2123,19 @@
 
         card.innerHTML = `
           <div>
-            <div class="relative h-56 overflow-hidden">
+            <div class="relative w-full aspect-square overflow-hidden bg-slate-950">
               <img src="${a.foto}" alt="${escapeHtml(a.nama)}" loading="lazy"
                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-70 pointer-events-none"></div>
 
-              <div class="absolute top-3 left-3">
+              <div class="absolute top-3 left-3 z-10">
                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-950/80 text-amber-300 border border-slate-700/80 backdrop-blur-md">
                   <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                   ${escapeHtml(a.kapasitas || "Standar")}
                 </span>
               </div>
 
-              <div class="absolute top-3 right-3">
+              <div class="absolute top-3 right-3 z-10">
                 <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/30 text-amber-300 border border-amber-500/40 backdrop-blur-md">
                   ${escapeHtml(a.kategori || "Armada")}
                 </span>
@@ -2775,7 +2775,7 @@
         item.className = "p-3.5 rounded-xl bg-slate-800/80 border border-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3";
         item.innerHTML = `
           <div class="flex items-center gap-3 w-full sm:w-auto">
-            <img src="${a.foto}" alt="${escapeHtml(a.nama)}" class="w-14 h-11 rounded-lg object-cover shrink-0 border border-slate-600">
+            <img src="${a.foto}" alt="${escapeHtml(a.nama)}" class="w-14 h-14 rounded-lg object-cover shrink-0 border border-slate-600">
             <div>
               <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-sm font-bold text-white">${escapeHtml(a.nama)}</span>
